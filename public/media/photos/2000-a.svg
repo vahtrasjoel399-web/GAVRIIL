@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" width="1200" height="1500">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#2b1d4a"/>
+    <stop offset="0.62" stop-color="#f0a3a0"/>
+    <stop offset="1" stop-color="#ffd9b0"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#fff1d6" stop-opacity="0.85"/>
+    <stop offset="0.35" stop-color="#fff1d6" stop-opacity="0.25"/>
+    <stop offset="1" stop-color="#fff1d6" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="vig" cx="0.5" cy="0.45" r="0.75">
+    <stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000" stop-opacity="0.45"/>
+  </radialGradient>
+  <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#6b3f6e"/>
+    <stop offset="1" stop-color="#2a1a3a"/>
+  </linearGradient>
+</defs>
+<rect width="1200" height="1500" fill="url(#sky)"/>
+<circle cx="518.4" cy="536.2" r="588.7" fill="url(#glow)"/>
+<circle cx="518.4" cy="536.2" r="117.7" fill="#fff1d6" opacity="0.95"/>
+<path d="M0 1500 L0 930 L0 870.3 L25 863.4 L50 862.7 L75 860.5 L100 861.8 L125 868.8 L150 884.7 L175 896.4 L200 919.7 L225 935.6 L250 963.7 L275 982.9 L300 1007.7 L325 1027.6 L350 1039.3 L375 1047.3 L400 1046.3 L425 1043.2 L450 1034.2 L475 1015.8 L500 1005.7 L525 986.9 L550 966.8 L575 952.6 L600 942.9 L625 934.8 L650 927.4 L675 924.8 L700 919.4 L725 916.7 L750 914.4 L775 906.1 L800 901.7 L825 887.3 L850 876.7 L875 863.7 L900 847.3 L925 839.3 L950 824.9 L975 816.4 L1000 819.7 L1025 826.3 L1050 835.6 L1075 850.3 L1100 874.7 L1125 893.9 L1150 919.1 L1175 945.8 L1200 969.2 L1200 1500 Z" fill="#6b3f6e"/>
+<path d="M0 1500 L0 1110 L0 1062.9 L25 1058.5 L50 1055.9 L75 1046.9 L100 1043.7 L125 1045.6 L150 1054.4 L175 1068 L200 1089.3 L225 1110.9 L250 1140.5 L275 1162.1 L300 1187.3 L325 1198.3 L350 1207.2 L375 1200 L400 1196.3 L425 1182.1 L450 1162.2 L475 1147 L500 1134.9 L525 1123.1 L550 1115.3 L575 1115.4 L600 1112 L625 1108.2 L650 1097.9 L675 1087.7 L700 1070.4 L725 1054.7 L750 1040.6 L775 1026.6 L800 1015.1 L825 1011.6 L850 1020.6 L875 1035.2 L900 1053.4 L925 1081.8 L950 1110.7 L975 1130.4 L1000 1151 L1025 1165.5 L1050 1170.8 L1075 1171.2 L1100 1166.9 L1125 1166.8 L1150 1159.3 L1175 1157.1 L1200 1156.3 L1200 1500 Z" fill="#4a2b57"/>
+<path d="M0 1500 L0 1290 L0 1257.2 L25 1259.8 L50 1257 L75 1259.1 L100 1254.5 L125 1253.4 L150 1251.5 L175 1251.4 L200 1245.4 L225 1241.8 L250 1238.6 L275 1237.3 L300 1232.1 L325 1231.4 L350 1230.7 L375 1230.5 L400 1231.9 L425 1235.1 L450 1238.5 L475 1244.5 L500 1253.6 L525 1266.4 L550 1277.7 L575 1289.3 L600 1297.9 L625 1312.3 L650 1319.8 L675 1330.2 L700 1343.9 L725 1351.5 L750 1353.5 L775 1360.8 L800 1362.4 L825 1358.5 L850 1359 L875 1357.7 L900 1350.6 L925 1344.9 L950 1341.2 L975 1334.6 L1000 1328.9 L1025 1324 L1050 1319.9 L1075 1316.4 L1100 1313.1 L1125 1309.6 L1150 1306.9 L1175 1306.9 L1200 1304.8 L1200 1500 Z" fill="#2a1a3a"/>
+<rect width="1200" height="1500" fill="url(#vig)"/>
+<text x="60" y="1425" font-family="ui-monospace, Menlo, monospace" font-size="28.8" letter-spacing="4" fill="#fff" opacity="0.55">PLACEHOLDER · 2000</text>
+</svg>

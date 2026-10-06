@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1000" width="1500" height="1000">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#3a2108"/>
+    <stop offset="0.62" stop-color="#d98e32"/>
+    <stop offset="1" stop-color="#ffe7a8"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#fffae6" stop-opacity="0.85"/>
+    <stop offset="0.35" stop-color="#fffae6" stop-opacity="0.25"/>
+    <stop offset="1" stop-color="#fffae6" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="vig" cx="0.5" cy="0.45" r="0.75">
+    <stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000" stop-opacity="0.45"/>
+  </radialGradient>
+  <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#a0601d"/>
+    <stop offset="1" stop-color="#3a1f08"/>
+  </linearGradient>
+</defs>
+<rect width="1500" height="1000" fill="url(#sky)"/>
+<circle cx="709.5" cy="520" r="368.6" fill="url(#glow)"/>
+<circle cx="709.5" cy="520" r="73.7" fill="#fffae6" opacity="0.95"/>
+<rect y="600" width="1500" height="400" fill="url(#sea)"/>
+<rect x="694.2" y="600" width="30.6" height="2" rx="2" fill="#fffae6" opacity="0.6"/>
+<rect x="677.2" y="604.2" width="64.6" height="2.3" rx="2" fill="#fffae6" opacity="0.5"/>
+<rect x="669.6" y="611" width="79.9" height="2.5" rx="2" fill="#fffae6" opacity="0.5"/>
+<rect x="673.4" y="619.5" width="72.2" height="2.8" rx="2" fill="#fffae6" opacity="0.5"/>
+<rect x="657.4" y="629.1" width="104.1" height="3" rx="2" fill="#fffae6" opacity="0.5"/>
+<rect x="681.4" y="639.8" width="56.1" height="3.3" rx="2" fill="#fffae6" opacity="0.5"/>
+<rect x="646.1" y="651.3" width="126.7" height="3.5" rx="2" fill="#fffae6" opacity="0.4"/>
+<rect x="640.6" y="663.7" width="137.8" height="3.8" rx="2" fill="#fffae6" opacity="0.4"/>
+<rect x="650.6" y="676.8" width="117.8" height="4" rx="2" fill="#fffae6" opacity="0.4"/>
+<rect x="664.2" y="690.6" width="90.6" height="4.3" rx="2" fill="#fffae6" opacity="0.4"/>
+<rect x="643.3" y="705" width="132.4" height="4.5" rx="2" fill="#fffae6" opacity="0.4"/>
+<rect x="664.6" y="720" width="89.9" height="4.8" rx="2" fill="#fffae6" opacity="0.4"/>
+<rect x="614.2" y="735.5" width="190.6" height="5" rx="2" fill="#fffae6" opacity="0.3"/>
+<rect x="651.2" y="751.6" width="116.6" height="5.3" rx="2" fill="#fffae6" opacity="0.3"/>
+<rect x="652.6" y="768.1" width="113.8" height="5.5" rx="2" fill="#fffae6" opacity="0.3"/>
+<rect x="616.9" y="785.2" width="185.3" height="5.8" rx="2" fill="#fffae6" opacity="0.3"/>
+<rect x="594.8" y="802.7" width="229.3" height="6" rx="2" fill="#fffae6" opacity="0.3"/>
+<rect x="620.1" y="820.7" width="178.8" height="6.3" rx="2" fill="#fffae6" opacity="0.2"/>
+<rect x="583.6" y="839" width="251.7" height="6.5" rx="2" fill="#fffae6" opacity="0.2"/>
+<rect x="632.1" y="857.8" width="154.8" height="6.8" rx="2" fill="#fffae6" opacity="0.2"/>
+<rect x="572.2" y="877" width="274.7" height="7" rx="2" fill="#fffae6" opacity="0.2"/>
+<rect x="609.7" y="896.6" width="199.7" height="7.3" rx="2" fill="#fffae6" opacity="0.2"/>
+<rect x="553.7" y="916.6" width="311.5" height="7.5" rx="2" fill="#fffae6" opacity="0.2"/>
+<rect x="563.4" y="936.9" width="292.1" height="7.8" rx="2" fill="#fffae6" opacity="0.1"/>
+<rect x="599.6" y="957.6" width="219.9" height="8" rx="2" fill="#fffae6" opacity="0.1"/>
+<rect x="559" y="978.6" width="301" height="8.3" rx="2" fill="#fffae6" opacity="0.1"/>
+<path d="M0 1000 L0 580 L0 565.6 L31.3 564.5 L62.5 564.9 L93.8 563.4 L125 562.9 L156.3 563.1 L187.5 560.3 L218.8 557.8 L250 556.1 L281.3 553 L312.5 551.3 L343.8 549.3 L375 550.1 L406.3 550.8 L437.5 553 L468.8 556.6 L500 560.4 L531.3 567.3 L562.5 575.7 L593.8 583.7 L625 591.3 L656.3 598.3 L687.5 603.9 L718.8 608 L750 613.8 L781.3 613.9 L812.5 614.3 L843.8 613.4 L875 611.1 L906.3 609.4 L937.5 605.7 L968.8 602.3 L1000 598.7 L1031.3 594.2 L1062.5 592.9 L1093.8 590.9 L1125 589 L1156.3 588.5 L1187.5 588.9 L1218.8 586.8 L1250 586.6 L1281.3 585.4 L1312.5 581.5 L1343.8 577 L1375 574.4 L1406.3 567.7 L1437.5 561.5 L1468.8 557.4 L1500 552 L1500 1000 Z" fill="#6b3d12" opacity="0.9"/>
+<rect width="1500" height="1000" fill="url(#vig)"/>
+<text x="75" y="950" font-family="ui-monospace, Menlo, monospace" font-size="24" letter-spacing="4" fill="#fff" opacity="0.55">PLACEHOLDER · 2003</text>
+</svg>

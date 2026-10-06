@@ -1,0 +1,181 @@
+.memories {
+  outline: none;
+}
+
+.memories__tools {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.memories__counter {
+  font-size: 14px;
+  color: var(--ink-3);
+}
+
+.memories__counter strong {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.memories__grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 18px;
+}
+
+.memory {
+  --mx: 50%;
+  --my: 30%;
+  width: 100%;
+  height: 100%;
+  display: block;
+  perspective: 1200px;
+  text-align: left;
+}
+
+.memory__inner {
+  position: relative;
+  display: grid;
+  height: 100%;
+  min-height: 330px;
+  transform-style: preserve-3d;
+  transition: transform 0.9s cubic-bezier(0.65, 0, 0.25, 1);
+}
+
+.memory.is-flipped .memory__inner {
+  transform: rotateY(180deg);
+}
+
+.memory__face {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 26px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.memory__front {
+  background:
+    radial-gradient(circle at var(--mx) var(--my), color-mix(in srgb, var(--memory-accent) 22%, transparent), transparent 55%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015));
+  transition: border-color 0.3s;
+}
+
+.memory:hover .memory__front {
+  border-color: color-mix(in srgb, var(--memory-accent) 45%, transparent);
+}
+
+.memory__back {
+  transform: rotateY(180deg);
+  background:
+    radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--memory-accent) 30%, transparent), transparent 60%),
+    var(--surface-solid);
+  border-color: color-mix(in srgb, var(--memory-accent) 40%, transparent);
+}
+
+.memory__emoji {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: auto;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--memory-accent) 16%, transparent);
+  font-size: 32px;
+  transition: transform 0.5s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .memory:hover .memory__emoji {
+    transform: rotate(-8deg) scale(1.08);
+  }
+}
+
+.memory__date {
+  margin-top: 24px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--memory-accent);
+}
+
+.memory__back .memory__date {
+  margin-top: auto;
+}
+
+.memory__title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.memory__teaser {
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.memory__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-3);
+  transition: color 0.3s;
+}
+
+.memory:hover .memory__hint {
+  color: var(--ink);
+}
+
+.memory__back-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--memory-accent);
+}
+
+.memory__story {
+  font-family: var(--font-display);
+  font-size: 21px;
+  line-height: 1.4;
+}
+
+@media (max-width: 560px) {
+  .memory__inner {
+    min-height: 250px;
+  }
+  .memory__date {
+    margin-top: 18px;
+  }
+}
+
+html[data-motion='reduced'] .memory.is-flipped .memory__inner {
+  transform: none;
+}
+
+html[data-motion='reduced'] .memory__back {
+  transform: none;
+  visibility: hidden;
+}
+
+html[data-motion='reduced'] .memory.is-flipped .memory__back {
+  visibility: visible;
+}
+
+html[data-motion='reduced'] .memory.is-flipped .memory__front {
+  visibility: hidden;
+}

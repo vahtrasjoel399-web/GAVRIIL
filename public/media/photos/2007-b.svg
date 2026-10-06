@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1000" width="1500" height="1000">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#2b1d4a"/>
+    <stop offset="0.62" stop-color="#f0a3a0"/>
+    <stop offset="1" stop-color="#ffd9b0"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#fff1d6" stop-opacity="0.85"/>
+    <stop offset="0.35" stop-color="#fff1d6" stop-opacity="0.25"/>
+    <stop offset="1" stop-color="#fff1d6" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="vig" cx="0.5" cy="0.45" r="0.75">
+    <stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000" stop-opacity="0.45"/>
+  </radialGradient>
+  <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#6b3f6e"/>
+    <stop offset="1" stop-color="#2a1a3a"/>
+  </linearGradient>
+</defs>
+<rect width="1500" height="1000" fill="url(#sky)"/>
+<circle cx="559.5" cy="302.6" r="589.3" fill="url(#glow)"/>
+<circle cx="559.5" cy="302.6" r="117.9" fill="#fff1d6" opacity="0.95"/>
+<path d="M0 1000 L0 620 L0 620.3 L31.3 638.5 L62.5 653.9 L93.8 668.4 L125 677.4 L156.3 684.5 L187.5 687.8 L218.8 687.1 L250 684.1 L281.3 675.4 L312.5 669.1 L343.8 663 L375 654.4 L406.3 653.7 L437.5 649.8 L468.8 646.7 L500 643.7 L531.3 642.2 L562.5 640.5 L593.8 638.7 L625 636.8 L656.3 631.8 L687.5 620.3 L718.8 608.1 L750 596.6 L781.3 582.8 L812.5 570 L843.8 558.3 L875 549 L906.3 543.5 L937.5 537.8 L968.8 541.8 L1000 546.3 L1031.3 556.3 L1062.5 565.1 L1093.8 579.6 L1125 595.5 L1156.3 609.8 L1187.5 624.8 L1218.8 631.3 L1250 642.1 L1281.3 645 L1312.5 647.9 L1343.8 650.2 L1375 649.4 L1406.3 653.4 L1437.5 654 L1468.8 656.2 L1500 658.3 L1500 1000 Z" fill="#6b3f6e"/>
+<path d="M0 1000 L0 740 L0 718.7 L31.3 719.3 L62.5 717.7 L93.8 717.8 L125 715.1 L156.3 711.5 L187.5 704.2 L218.8 699.5 L250 693.8 L281.3 687.8 L312.5 687.4 L343.8 691.9 L375 696.7 L406.3 711.5 L437.5 729.3 L468.8 745.5 L500 763.2 L531.3 779.9 L562.5 788.9 L593.8 795.7 L625 796.5 L656.3 793.9 L687.5 785.3 L718.8 778.1 L750 769.2 L781.3 766.8 L812.5 762.6 L843.8 759 L875 757 L906.3 754.5 L937.5 753.1 L968.8 746.6 L1000 739.5 L1031.3 727 L1062.5 711.6 L1093.8 698.5 L1125 685.4 L1156.3 675.6 L1187.5 673.8 L1218.8 674.4 L1250 682.9 L1281.3 696.2 L1312.5 709.6 L1343.8 727.2 L1375 742 L1406.3 753.1 L1437.5 759.8 L1468.8 764.9 L1500 768 L1500 1000 Z" fill="#4a2b57"/>
+<path d="M0 1000 L0 860 L0 907.5 L31.3 901.4 L62.5 897.1 L93.8 894 L125 890.3 L156.3 885.2 L187.5 878.6 L218.8 875.3 L250 871 L281.3 867.8 L312.5 866.8 L343.8 864.1 L375 862.2 L406.3 862.3 L437.5 859.9 L468.8 858.7 L500 859.9 L531.3 855.8 L562.5 855.6 L593.8 852.5 L625 848.7 L656.3 847.7 L687.5 841.9 L718.8 837.2 L750 832.4 L781.3 829 L812.5 824.1 L843.8 819 L875 814.9 L906.3 812.5 L937.5 810.8 L968.8 808.4 L1000 809.2 L1031.3 811.3 L1062.5 814 L1093.8 819.6 L1125 824.9 L1156.3 829.9 L1187.5 838.8 L1218.8 847.2 L1250 852.6 L1281.3 861.6 L1312.5 869.5 L1343.8 874.5 L1375 880.3 L1406.3 885.6 L1437.5 887.4 L1468.8 890 L1500 892 L1500 1000 Z" fill="#2a1a3a"/>
+<circle cx="1309" cy="749.8" r="81.5" fill="#fff1d6" opacity="0.1"/>
+<circle cx="282.6" cy="92.2" r="41.9" fill="#fff1d6" opacity="0.2"/>
+<circle cx="1438.7" cy="559.2" r="65.8" fill="#fff1d6" opacity="0.2"/>
+<circle cx="536.8" cy="880.6" r="98.9" fill="#fff1d6" opacity="0.2"/>
+<circle cx="1192.9" cy="245.6" r="86.3" fill="#fff1d6" opacity="0.1"/>
+<circle cx="951.5" cy="490.6" r="60.9" fill="#fff1d6" opacity="0.2"/>
+<circle cx="1381" cy="669.4" r="68.3" fill="#fff1d6" opacity="0.1"/>
+<circle cx="1219.9" cy="338.7" r="83.1" fill="#fff1d6" opacity="0.1"/>
+<circle cx="1329.7" cy="16.1" r="75.5" fill="#fff1d6" opacity="0.1"/>
+<circle cx="671.7" cy="722.3" r="50.7" fill="#fff1d6" opacity="0.1"/>
+<circle cx="501.9" cy="51.3" r="80.5" fill="#fff1d6" opacity="0.1"/>
+<circle cx="1093.5" cy="799.3" r="33" fill="#fff1d6" opacity="0.2"/>
+<circle cx="1232.6" cy="645.3" r="55.9" fill="#fff1d6" opacity="0.2"/>
+<circle cx="824.5" cy="83.2" r="75" fill="#fff1d6" opacity="0.1"/>
+<circle cx="740.1" cy="172.9" r="91.5" fill="#fff1d6" opacity="0.2"/>
+<circle cx="470" cy="860.6" r="75.9" fill="#fff1d6" opacity="0.2"/>
+<circle cx="603.2" cy="258.1" r="82.5" fill="#fff1d6" opacity="0.2"/>
+<circle cx="275.8" cy="179.6" r="50.4" fill="#fff1d6" opacity="0.1"/>
+<rect width="1500" height="1000" fill="url(#vig)"/>
+<text x="75" y="950" font-family="ui-monospace, Menlo, monospace" font-size="24" letter-spacing="4" fill="#fff" opacity="0.55">PLACEHOLDER · 2007</text>
+</svg>
