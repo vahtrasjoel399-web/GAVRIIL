@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1000" width="1500" height="1000">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#4f5a5c"/>
+    <stop offset="0.62" stop-color="#a9b3a8"/>
+    <stop offset="1" stop-color="#efe8d4"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#fffbea" stop-opacity="0.85"/>
+    <stop offset="0.35" stop-color="#fffbea" stop-opacity="0.25"/>
+    <stop offset="1" stop-color="#fffbea" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="vig" cx="0.5" cy="0.45" r="0.75">
+    <stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000" stop-opacity="0.45"/>
+  </radialGradient>
+  <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#7d8a7b"/>
+    <stop offset="1" stop-color="#3c463b"/>
+  </linearGradient>
+</defs>
+<rect width="1500" height="1000" fill="url(#sky)"/>
+<circle cx="781.3" cy="520" r="426.2" fill="url(#glow)"/>
+<circle cx="781.3" cy="520" r="85.2" fill="#fffbea" opacity="0.95"/>
+<rect y="600" width="1500" height="400" fill="url(#sea)"/>
+<rect x="759.9" y="600" width="42.8" height="2" rx="2" fill="#fffbea" opacity="0.6"/>
+<rect x="756.8" y="604.2" width="49.1" height="2.3" rx="2" fill="#fffbea" opacity="0.5"/>
+<rect x="751.1" y="611" width="60.3" height="2.5" rx="2" fill="#fffbea" opacity="0.5"/>
+<rect x="750" y="619.5" width="62.6" height="2.8" rx="2" fill="#fffbea" opacity="0.5"/>
+<rect x="741.1" y="629.1" width="80.5" height="3" rx="2" fill="#fffbea" opacity="0.5"/>
+<rect x="716.4" y="639.8" width="129.9" height="3.3" rx="2" fill="#fffbea" opacity="0.5"/>
+<rect x="737.2" y="651.3" width="88.2" height="3.5" rx="2" fill="#fffbea" opacity="0.4"/>
+<rect x="700.1" y="663.7" width="162.3" height="3.8" rx="2" fill="#fffbea" opacity="0.4"/>
+<rect x="711.7" y="676.8" width="139.2" height="4" rx="2" fill="#fffbea" opacity="0.4"/>
+<rect x="738.7" y="690.6" width="85.2" height="4.3" rx="2" fill="#fffbea" opacity="0.4"/>
+<rect x="705.8" y="705" width="150.9" height="4.5" rx="2" fill="#fffbea" opacity="0.4"/>
+<rect x="681.4" y="720" width="199.8" height="4.8" rx="2" fill="#fffbea" opacity="0.4"/>
+<rect x="700.4" y="735.5" width="161.9" height="5" rx="2" fill="#fffbea" opacity="0.3"/>
+<rect x="659.1" y="751.6" width="244.5" height="5.3" rx="2" fill="#fffbea" opacity="0.3"/>
+<rect x="693.1" y="768.1" width="176.4" height="5.5" rx="2" fill="#fffbea" opacity="0.3"/>
+<rect x="717.4" y="785.2" width="127.7" height="5.8" rx="2" fill="#fffbea" opacity="0.3"/>
+<rect x="712.5" y="802.7" width="137.6" height="6" rx="2" fill="#fffbea" opacity="0.3"/>
+<rect x="654.7" y="820.7" width="253.2" height="6.3" rx="2" fill="#fffbea" opacity="0.2"/>
+<rect x="670.4" y="839" width="221.7" height="6.5" rx="2" fill="#fffbea" opacity="0.2"/>
+<rect x="666.3" y="857.8" width="230" height="6.8" rx="2" fill="#fffbea" opacity="0.2"/>
+<rect x="659.4" y="877" width="243.7" height="7" rx="2" fill="#fffbea" opacity="0.2"/>
+<rect x="674.6" y="896.6" width="213.4" height="7.3" rx="2" fill="#fffbea" opacity="0.2"/>
+<rect x="655.8" y="916.6" width="250.9" height="7.5" rx="2" fill="#fffbea" opacity="0.2"/>
+<rect x="662.2" y="936.9" width="238.2" height="7.8" rx="2" fill="#fffbea" opacity="0.1"/>
+<rect x="671.3" y="957.6" width="219.9" height="8" rx="2" fill="#fffbea" opacity="0.1"/>
+<rect x="634.9" y="978.6" width="292.7" height="8.3" rx="2" fill="#fffbea" opacity="0.1"/>
+<path d="M0 1000 L0 580 L0 563.9 L31.3 563.9 L62.5 564.9 L93.8 563.4 L125 564.7 L156.3 563.5 L187.5 561.8 L218.8 558.8 L250 555.2 L281.3 554.4 L312.5 551.5 L343.8 548.5 L375 549.7 L406.3 550.2 L437.5 552.2 L468.8 554.1 L500 559.7 L531.3 567 L562.5 573.9 L593.8 581.5 L625 588.5 L656.3 597.3 L687.5 603.7 L718.8 607.1 L750 610.9 L781.3 614.8 L812.5 616 L843.8 613.5 L875 611.8 L906.3 609.7 L937.5 605.6 L968.8 601.9 L1000 597.9 L1031.3 596.5 L1062.5 592.4 L1093.8 592.4 L1125 590.9 L1156.3 590.4 L1187.5 589.5 L1218.8 588.4 L1250 586.1 L1281.3 585.2 L1312.5 581.6 L1343.8 579.9 L1375 573.6 L1406.3 569.1 L1437.5 564.6 L1468.8 557.5 L1500 551.4 L1500 1000 Z" fill="#5e6a5c" opacity="0.9"/>
+<rect width="1500" height="1000" fill="url(#vig)"/>
+<text x="75" y="950" font-family="ui-monospace, Menlo, monospace" font-size="24" letter-spacing="4" fill="#fff" opacity="0.6">ЗАГЛУШКА · ДЕТСКОЕ ФОТО</text>
+</svg>

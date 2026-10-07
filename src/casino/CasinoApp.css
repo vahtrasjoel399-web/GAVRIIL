@@ -1,0 +1,665 @@
+.casino {
+  --c-bg: #0a0c16;
+  --c-panel: #131728;
+  --c-panel-2: #1a1f35;
+  --c-line: rgba(255, 255, 255, 0.08);
+  --c-text: #eef1ff;
+  --c-muted: rgba(238, 241, 255, 0.55);
+  --c-cyan: #00e5ff;
+  --c-pink: #ff2bd6;
+  --c-lime: #a6ff00;
+  --c-red: #ff3b5c;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(60% 50% at 15% 20%, rgba(255, 43, 214, 0.25), transparent 70%),
+    radial-gradient(50% 50% at 85% 80%, rgba(0, 229, 255, 0.2), transparent 70%),
+    #05060c;
+  font-family: var(--font-body);
+  color: var(--c-text);
+}
+
+.casino__phone {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--c-bg);
+}
+
+@media (min-width: 640px) {
+  .casino__phone {
+    width: 420px;
+    height: min(880px, calc(100dvh - 48px));
+    border-radius: 34px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 0 0 8px #0d0f1a,
+      0 0 60px rgba(0, 229, 255, 0.25),
+      0 40px 120px rgba(0, 0, 0, 0.8);
+  }
+}
+
+/* ---------- top bar ---------- */
+
+.cas-top {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: max(12px, env(safe-area-inset-top)) 16px 12px;
+  border-bottom: 1px solid var(--c-line);
+  background: rgba(10, 12, 22, 0.9);
+}
+
+.cas-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+  font-family: var(--font-casino);
+  font-weight: 800;
+  font-size: 19px;
+  letter-spacing: -0.01em;
+  background: linear-gradient(90deg, var(--c-lime), var(--c-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.cas-logo__mark {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--c-lime), var(--c-cyan));
+  color: #06101a;
+  font-size: 16px;
+  -webkit-text-fill-color: #06101a;
+  box-shadow: 0 0 16px rgba(166, 255, 0, 0.5);
+}
+
+.cas-balance {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--c-panel-2);
+  border: 1px solid rgba(166, 255, 0, 0.35);
+  font-weight: 700;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.cas-balance__icon {
+  color: var(--c-lime);
+}
+
+.cas-avatar {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--c-pink), #7a2bff);
+  font-weight: 800;
+}
+
+/* ---------- screen ---------- */
+
+.cas-screen {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 14px 14px 220px;
+}
+
+.cas-muted {
+  color: var(--c-muted);
+  font-size: 13px;
+}
+
+.cas-green {
+  color: var(--c-lime);
+}
+
+.cas-h2 {
+  font-family: var(--font-casino);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.cas-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.cas-tabs span {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--c-panel);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-muted);
+}
+
+.cas-tabs span.is-active {
+  background: var(--c-panel-2);
+  color: var(--c-text);
+  box-shadow: inset 0 0 0 1px rgba(255, 59, 92, 0.5);
+}
+
+.cas-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c-red);
+  box-shadow: 0 0 8px var(--c-red);
+  animation: live-blink 1s ease-in-out infinite;
+}
+
+@keyframes live-blink {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.cas-promo {
+  margin: 12px 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, rgba(255, 43, 214, 0.25), rgba(0, 229, 255, 0.18));
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cas-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(255, 59, 92, 0.16);
+  color: var(--c-red);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.cas-badge--win {
+  background: rgba(166, 255, 0, 0.15);
+  color: var(--c-lime);
+}
+
+.cas-event {
+  padding: 16px 14px;
+  border-radius: 18px;
+  background: var(--c-panel);
+  border: 1px solid var(--c-line);
+}
+
+.cas-event__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cas-event__title {
+  margin-top: 8px;
+  font-family: var(--font-casino);
+  font-weight: 700;
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.cas-market__head {
+  display: grid;
+  gap: 2px;
+  margin: 16px 0 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--c-line);
+}
+
+.cas-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.cas-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 14px;
+  background: var(--c-panel-2);
+  border: 1px solid transparent;
+  text-align: left;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    transform 0.15s;
+}
+
+.cas-card:active {
+  transform: scale(0.98);
+}
+
+.cas-card.is-picked {
+  border-color: var(--c-lime);
+  background: rgba(166, 255, 0, 0.08);
+}
+
+.cas-card__photo {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.cas-card__body {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.cas-card__name {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.cas-card__nick {
+  font-size: 12px;
+  color: var(--c-muted);
+}
+
+.cas-card__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 10px;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--c-muted);
+}
+
+.cas-card__stats b {
+  color: var(--c-text);
+  font-weight: 600;
+}
+
+.cas-odd {
+  flex: none;
+  min-width: 62px;
+  padding: 10px 8px;
+  border-radius: 10px;
+  background: #0d1122;
+  border: 1px solid rgba(0, 229, 255, 0.45);
+  color: var(--c-cyan);
+  font-weight: 800;
+  font-size: 16px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.18);
+}
+
+.cas-card.is-picked .cas-odd {
+  background: var(--c-lime);
+  border-color: var(--c-lime);
+  color: #0a1200;
+  box-shadow: 0 0 18px rgba(166, 255, 0, 0.55);
+}
+
+.cas-odd--static {
+  min-width: 0;
+}
+
+/* ---------- bottom sheets ---------- */
+
+.cas-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  display: grid;
+  gap: 14px;
+  padding: 18px 16px max(18px, env(safe-area-inset-bottom));
+  border-radius: 22px 22px 0 0;
+  background: #161b2f;
+  border-top: 1px solid rgba(166, 255, 0, 0.35);
+  box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.cas-sheet__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-casino);
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.cas-sheet__head em {
+  margin-left: 6px;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-muted);
+}
+
+.cas-sheet__x {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--c-panel);
+  font-size: 22px;
+  line-height: 1;
+  color: var(--c-muted);
+}
+
+.cas-slip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--c-panel);
+}
+
+.cas-slip__name {
+  font-weight: 700;
+}
+
+.cas-slip__rows {
+  display: grid;
+  gap: 6px;
+}
+
+.cas-slip__rows p {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--c-muted);
+}
+
+.cas-slip__rows b {
+  color: var(--c-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.cas-btn {
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, var(--c-lime), #46e38a);
+  color: #071200;
+  font-family: var(--font-casino);
+  font-weight: 700;
+  font-size: 16px;
+  box-shadow: 0 10px 30px -10px rgba(166, 255, 0, 0.8);
+  transition: transform 0.15s;
+}
+
+.cas-btn:active {
+  transform: scale(0.97);
+}
+
+.cas-btn--wide {
+  width: 100%;
+}
+
+.cas-btn--next {
+  margin-top: 10px;
+  background: linear-gradient(90deg, var(--c-pink), #7a2bff);
+  color: #fff;
+  box-shadow: 0 10px 30px -10px rgba(255, 43, 214, 0.8);
+}
+
+.cas-dim {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.cas-withdraw__amount {
+  font-family: var(--font-casino);
+  font-weight: 800;
+  font-size: 38px;
+  text-align: center;
+}
+
+.cas-withdraw__method {
+  text-align: center;
+}
+
+/* ---------- centered states ---------- */
+
+.cas-center {
+  min-height: 60dvh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.cas-center--small {
+  min-height: 0;
+  padding: 26px 0 8px;
+}
+
+.cas-check {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--c-lime);
+  color: #071200;
+  font-size: 44px;
+  font-weight: 900;
+  box-shadow: 0 0 40px rgba(166, 255, 0, 0.6);
+}
+
+.cas-won {
+  font-family: var(--font-casino);
+  font-weight: 800;
+  font-size: 34px;
+  line-height: 1.1;
+  background: linear-gradient(90deg, var(--c-lime), var(--c-cyan), var(--c-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px rgba(0, 229, 255, 0.45));
+}
+
+.cas-amount {
+  font-family: var(--font-casino);
+  font-weight: 800;
+  font-size: 44px;
+  color: var(--c-lime);
+  text-shadow: 0 0 24px rgba(166, 255, 0, 0.6);
+}
+
+/* ---------- live ---------- */
+
+.cas-live {
+  display: grid;
+  gap: 14px;
+}
+
+.cas-live__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cas-live__min {
+  font-family: var(--font-casino);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-red);
+}
+
+.cas-bars {
+  list-style: none;
+  margin: 0;
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+  border-radius: 16px;
+  background: var(--c-panel);
+}
+
+.cas-bars li {
+  display: grid;
+  gap: 6px;
+}
+
+.cas-bars__name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.cas-bars__name img {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  object-fit: cover;
+}
+
+.cas-bars__track {
+  height: 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
+.cas-bars__fill {
+  display: block;
+  height: 100%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #7a2bff, var(--c-pink));
+  transition: width 0.12s linear;
+}
+
+.cas-bars li.is-pick .cas-bars__fill {
+  background: linear-gradient(90deg, var(--c-cyan), var(--c-lime));
+  box-shadow: 0 0 12px rgba(166, 255, 0, 0.5);
+}
+
+.cas-feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.cas-feed li {
+  display: flex;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--c-panel);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.cas-feed__min {
+  flex: none;
+  color: var(--c-cyan);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- wallet ---------- */
+
+.cas-wallet {
+  display: grid;
+  gap: 14px;
+}
+
+.cas-wallet__card {
+  display: grid;
+  gap: 8px;
+  padding: 20px 16px;
+  border-radius: 20px;
+  background:
+    radial-gradient(120% 120% at 100% 0%, rgba(0, 229, 255, 0.25), transparent 60%),
+    radial-gradient(120% 120% at 0% 100%, rgba(255, 43, 214, 0.25), transparent 60%),
+    var(--c-panel-2);
+  border: 1px solid var(--c-line);
+}
+
+.cas-wallet__balance {
+  margin-bottom: 8px;
+  font-family: var(--font-casino);
+  font-weight: 800;
+  font-size: 40px;
+  font-variant-numeric: tabular-nums;
+}
+
+.cas-spinner {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.12);
+  border-top-color: var(--c-lime);
+  animation: cas-spin 0.9s linear infinite;
+}
+
+@keyframes cas-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.cas-done {
+  font-family: var(--font-casino);
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.cas-history {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--c-panel);
+}
+
+.cas-history__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}

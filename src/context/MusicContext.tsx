@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { music } from '../content'
+import { readStorage, writeStorage } from '../lib/storage'
 
 type MusicStatus = 'idle' | 'loading' | 'playing' | 'paused' | 'error'
 
@@ -9,12 +10,15 @@ interface MusicApi {
   play: () => void
   pause: () => void
   toggle: () => void
-  /** Temporarily silence the music (e.g. while the film plays) and restore it afterwards. */
+  /** Temporarily silence the music (e.g. while a video plays) and restore it afterwards. */
   duck: (on: boolean) => void
+  /** Start on the first interaction unless the visitor switched music off before. */
+  startIfAllowed: () => void
 }
 
 const MusicContext = createContext<MusicApi | null>(null)
 const FADE_MS = 1200
+const PREF = 'pref:music'
 
 export function MusicProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -84,7 +88,15 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     stopAudio()
   }, [stopAudio])
 
-  const toggle = useCallback(() => (wantRef.current ? pause() : play()), [pause, play])
+  const toggle = useCallback(() => {
+    writeStorage(PREF, wantRef.current ? 'off' : 'on')
+    if (wantRef.current) pause()
+    else play()
+  }, [pause, play])
+
+  const startIfAllowed = useCallback(() => {
+    if (!wantRef.current && readStorage<string>(PREF, 'on') !== 'off') play()
+  }, [play])
 
   const duck = useCallback(
     (on: boolean) => {
@@ -117,8 +129,16 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   )
 
   const value = useMemo<MusicApi>(
-    () => ({ status, playing: !ducked && (status === 'playing' || status === 'loading'), play, pause, toggle, duck }),
-    [status, ducked, play, pause, toggle, duck],
+    () => ({
+      status,
+      playing: !ducked && (status === 'playing' || status === 'loading'),
+      play,
+      pause,
+      toggle,
+      duck,
+      startIfAllowed,
+    }),
+    [status, ducked, play, pause, toggle, duck, startIfAllowed],
   )
 
   return <MusicContext value={value}>{children}</MusicContext>

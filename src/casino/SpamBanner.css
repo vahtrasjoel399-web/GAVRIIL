@@ -1,0 +1,119 @@
+.spam .modal__backdrop {
+  background: rgba(10, 4, 20, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.spam__card {
+  position: relative;
+  width: min(380px, calc(100vw - 32px));
+  padding: 3px;
+  border-radius: 22px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.spam__glow {
+  position: absolute;
+  inset: -60%;
+  z-index: -1;
+  background: conic-gradient(from 0deg, #ff2bd6, #00e5ff, #a6ff00, #ffcc00, #ff2bd6);
+  animation: spam-spin 2.4s linear infinite;
+}
+
+@keyframes spam-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.spam__inner {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 30px 24px 24px;
+  border-radius: 19px;
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgba(255, 43, 214, 0.25), transparent 60%),
+    #120a22;
+  color: #fff;
+  text-align: center;
+  font-family: var(--font-body);
+}
+
+.spam__close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 26px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.spam__joke {
+  position: absolute;
+  top: 14px;
+  right: 50px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: #ffcc00;
+  color: #1a0f00;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.spam__brand {
+  font-family: var(--font-casino);
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: #a6ff00;
+  text-shadow: 0 0 12px rgba(166, 255, 0, 0.6);
+}
+
+.spam__title {
+  font-family: var(--font-casino);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.spam__text {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.spam__timer {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.spam__timer b {
+  color: #ff5c8a;
+  font-variant-numeric: tabular-nums;
+}
+
+.spam__cta {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 6px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #ff2bd6, #ff7a00);
+  color: #fff;
+  font-family: var(--font-casino);
+  font-weight: 700;
+  font-size: 17px;
+  box-shadow: 0 10px 30px -8px rgba(255, 43, 214, 0.8);
+  animation: cta-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes cta-pulse {
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 14px 40px -6px rgba(255, 43, 214, 0.95);
+  }
+}

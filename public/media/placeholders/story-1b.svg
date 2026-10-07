@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" width="1200" height="1500">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#0f3a3f"/>
+    <stop offset="0.62" stop-color="#5fb7a6"/>
+    <stop offset="1" stop-color="#e6f4d8"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#fffbe8" stop-opacity="0.85"/>
+    <stop offset="0.35" stop-color="#fffbe8" stop-opacity="0.25"/>
+    <stop offset="1" stop-color="#fffbe8" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="vig" cx="0.5" cy="0.45" r="0.75">
+    <stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000" stop-opacity="0.45"/>
+  </radialGradient>
+  <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#2f7d71"/>
+    <stop offset="1" stop-color="#103633"/>
+  </linearGradient>
+</defs>
+<rect width="1200" height="1500" fill="url(#sky)"/>
+<circle cx="571.3" cy="561.6" r="678.2" fill="url(#glow)"/>
+<circle cx="571.3" cy="561.6" r="135.6" fill="#fffbe8" opacity="0.95"/>
+<path d="M0 1500 L0 930 L0 873.3 L25 869.7 L50 872.2 L75 863.8 L100 858 L125 856.3 L150 846.7 L175 851.8 L200 852.8 L225 856.6 L250 873.7 L275 887 L300 912.3 L325 931.8 L350 959.6 L375 986.2 L400 1004.7 L425 1025.3 L450 1034.6 L475 1042.8 L500 1041.9 L525 1037.4 L550 1028.4 L575 1015.2 L600 1000.2 L625 985.6 L650 975.6 L675 963.8 L700 952.2 L725 947 L750 941.6 L775 935.2 L800 938.6 L825 928.5 L850 925.6 L875 915.7 L900 909.3 L925 891.2 L950 879.4 L975 861.3 L1000 846.5 L1025 828.6 L1050 821.3 L1075 813.2 L1100 814.9 L1125 821.1 L1150 833.1 L1175 850.4 L1200 869 L1200 1500 Z" fill="#2f7d71"/>
+<path d="M0 1500 L0 1110 L0 1179 L25 1160.3 L50 1145.7 L75 1129.2 L100 1115.3 L125 1108 L150 1105.7 L175 1102.4 L200 1101 L225 1093.4 L250 1084.3 L275 1067.9 L300 1056.8 L325 1040.1 L350 1029.5 L375 1017.5 L400 1019.5 L425 1020.7 L450 1041.3 L475 1057.2 L500 1085.7 L525 1111.3 L550 1139.2 L575 1157.5 L600 1168.7 L625 1176.8 L650 1178.3 L675 1174.7 L700 1165.5 L725 1162 L750 1158.5 L775 1159.1 L800 1155.6 L825 1162.3 L850 1162 L875 1156.8 L900 1149.9 L925 1136.5 L950 1118.3 L975 1097 L1000 1069.5 L1025 1046.5 L1050 1029.3 L1075 1014.7 L1100 1007.7 L1125 1014 L1150 1027.3 L1175 1039.6 L1200 1061.4 L1200 1500 Z" fill="#1d5752"/>
+<path d="M0 1500 L0 1290 L0 1252.7 L25 1249.1 L50 1247 L75 1248.1 L100 1243.5 L125 1243.8 L150 1241.6 L175 1238.9 L200 1237.3 L225 1238.8 L250 1241.5 L275 1243.5 L300 1248 L325 1254 L350 1261.8 L375 1274.4 L400 1284 L425 1295.7 L450 1304 L475 1318 L500 1328.2 L525 1339.9 L550 1345.3 L575 1354.1 L600 1360.9 L625 1362.3 L650 1368 L675 1364.3 L700 1365.4 L725 1361.5 L750 1353.2 L775 1350.2 L800 1339.1 L825 1335.2 L850 1327.4 L875 1322.2 L900 1311.4 L925 1306.2 L950 1306.1 L975 1301.5 L1000 1296 L1025 1296.2 L1050 1292.9 L1075 1294 L1100 1290.1 L1125 1290.1 L1150 1285.7 L1175 1284.5 L1200 1282.2 L1200 1500 Z" fill="#103633"/>
+<circle cx="992.7" cy="88.1" r="96" fill="#fffbe8" opacity="0.2"/>
+<circle cx="241.4" cy="1207.6" r="91" fill="#fffbe8" opacity="0.1"/>
+<circle cx="589.2" cy="330" r="85.4" fill="#fffbe8" opacity="0.1"/>
+<circle cx="875.7" cy="429.8" r="109.7" fill="#fffbe8" opacity="0.1"/>
+<circle cx="627.6" cy="752.9" r="34.9" fill="#fffbe8" opacity="0.1"/>
+<circle cx="923.2" cy="14.4" r="76.5" fill="#fffbe8" opacity="0.1"/>
+<circle cx="883.2" cy="287.8" r="106.7" fill="#fffbe8" opacity="0.2"/>
+<circle cx="1076.3" cy="622.1" r="49.1" fill="#fffbe8" opacity="0.2"/>
+<circle cx="1102.7" cy="138.6" r="69.7" fill="#fffbe8" opacity="0.1"/>
+<circle cx="746.4" cy="798.2" r="45.6" fill="#fffbe8" opacity="0.1"/>
+<circle cx="1176.4" cy="136.9" r="106.2" fill="#fffbe8" opacity="0.1"/>
+<circle cx="128.5" cy="375.4" r="99.5" fill="#fffbe8" opacity="0.1"/>
+<circle cx="150.7" cy="151.7" r="61.4" fill="#fffbe8" opacity="0.1"/>
+<circle cx="664.5" cy="39.9" r="48.2" fill="#fffbe8" opacity="0.1"/>
+<circle cx="474.2" cy="385.9" r="87.1" fill="#fffbe8" opacity="0.1"/>
+<circle cx="525.2" cy="1144" r="38.6" fill="#fffbe8" opacity="0.1"/>
+<circle cx="442.1" cy="310.3" r="116.8" fill="#fffbe8" opacity="0.2"/>
+<circle cx="602" cy="1015" r="106.9" fill="#fffbe8" opacity="0.1"/>
+<rect width="1200" height="1500" fill="url(#vig)"/>
+<text x="60" y="1425" font-family="ui-monospace, Menlo, monospace" font-size="28.8" letter-spacing="4" fill="#fff" opacity="0.6">ЗАГЛУШКА · STORY 1</text>
+</svg>

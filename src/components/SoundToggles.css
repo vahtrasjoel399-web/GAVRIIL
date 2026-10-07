@@ -1,0 +1,21 @@
+.sound-toggles {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  right: 14px;
+  z-index: 40;
+  display: flex;
+  gap: 8px;
+}
+
+.sound-toggles .icon-btn {
+  width: 40px;
+  height: 40px;
+  color: #f1e3c8;
+  background: rgba(30, 20, 14, 0.55);
+  border-color: rgba(240, 225, 200, 0.18);
+}
+
+.sound-toggles .icon-btn svg {
+  width: 18px;
+  height: 18px;
+}

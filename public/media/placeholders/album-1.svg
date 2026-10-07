@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" width="1200" height="1500">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#5a4632"/>
+    <stop offset="0.62" stop-color="#b99c74"/>
+    <stop offset="1" stop-color="#efe0c2"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#fff6e2" stop-opacity="0.85"/>
+    <stop offset="0.35" stop-color="#fff6e2" stop-opacity="0.25"/>
+    <stop offset="1" stop-color="#fff6e2" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="vig" cx="0.5" cy="0.45" r="0.75">
+    <stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000" stop-opacity="0.45"/>
+  </radialGradient>
+  <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#8a6f50"/>
+    <stop offset="1" stop-color="#45331f"/>
+  </linearGradient>
+</defs>
+<rect width="1200" height="1500" fill="url(#sky)"/>
+<circle cx="734.2" cy="587.8" r="586.5" fill="url(#glow)"/>
+<circle cx="734.2" cy="587.8" r="117.3" fill="#fff6e2" opacity="0.95"/>
+<path d="M0 1500 L0 930 L0 886.3 L25 880.7 L50 881.5 L75 881.6 L100 879.1 L125 878.3 L150 868.8 L175 863.9 L200 849.4 L225 843.9 L250 837.6 L275 839.8 L300 842.1 L325 848.8 L350 861.7 L375 880.4 L400 904 L425 922.5 L450 953.3 L475 974.9 L500 998.7 L525 1011.2 L550 1026.7 L575 1034.3 L600 1035.1 L625 1031.8 L650 1023 L675 1012.8 L700 1002.2 L725 990.6 L750 981 L775 970 L800 962 L825 956.1 L850 956.9 L875 953 L900 949.1 L925 946.7 L950 942.3 L975 933.1 L1000 916.3 L1025 901.1 L1050 882.7 L1075 863.3 L1100 847.1 L1125 832.3 L1150 819.4 L1175 810.4 L1200 809.2 L1200 1500 Z" fill="#8a6f50"/>
+<path d="M0 1500 L0 1110 L0 1190 L25 1175.5 L50 1160.1 L75 1140.4 L100 1129.6 L125 1115.8 L150 1111.2 L175 1109.4 L200 1103.4 L225 1103.7 L250 1096.7 L275 1082.5 L300 1070.1 L325 1050 L350 1037.3 L375 1024.4 L400 1015.7 L425 1013.8 L450 1025.9 L475 1043 L500 1065.1 L525 1087.4 L550 1113.9 L575 1138 L600 1158.7 L625 1166.4 L650 1176.4 L675 1172.9 L700 1168.4 L725 1164.7 L750 1163.6 L775 1156.7 L800 1158.5 L825 1158.7 L850 1161.8 L875 1164.8 L900 1159.4 L925 1149.4 L950 1139.4 L975 1117.3 L1000 1093.9 L1025 1068.9 L1050 1047.5 L1075 1024 L1100 1013.4 L1125 1009.8 L1150 1017.3 L1175 1030.6 L1200 1044.8 L1200 1500 Z" fill="#6a5238"/>
+<path d="M0 1500 L0 1290 L0 1329.2 L25 1322.4 L50 1313.6 L75 1306.6 L100 1301.5 L125 1293 L150 1290.2 L175 1285.5 L200 1286.6 L225 1284.3 L250 1283.3 L275 1279.2 L300 1276.5 L325 1278.8 L350 1272.7 L375 1270.6 L400 1267.3 L425 1262.9 L450 1259.2 L475 1252.1 L500 1246.3 L525 1238.7 L550 1233.9 L575 1225.3 L600 1223.7 L625 1219.1 L650 1218.3 L675 1214.5 L700 1216.7 L725 1221.2 L750 1229.3 L775 1234 L800 1243.6 L825 1256.5 L850 1265.6 L875 1276.7 L900 1291.1 L925 1302.4 L950 1311 L975 1320.6 L1000 1330.9 L1025 1335.4 L1050 1342.7 L1075 1343.5 L1100 1344.3 L1125 1347.1 L1150 1346.7 L1175 1345.9 L1200 1340.6 L1200 1500 Z" fill="#45331f"/>
+<rect width="1200" height="1500" fill="url(#vig)"/>
+<text x="60" y="1425" font-family="ui-monospace, Menlo, monospace" font-size="28.8" letter-spacing="4" fill="#fff" opacity="0.6">ЗАГЛУШКА · ДЕТСКОЕ ФОТО</text>
+</svg>

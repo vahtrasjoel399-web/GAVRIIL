@@ -1,4 +1,4 @@
-// Generates soft, abstract placeholder "photos" (SVG) into public/media/photos.
+// Generates soft, abstract placeholder "photos" (SVG) into public/media/placeholders.
 // Replace them with real photos and update src/content/*.ts — this script is only
 // needed for the demo content.
 //
@@ -9,7 +9,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
-const outDir = join(root, 'public', 'media', 'photos')
+const outDir = join(root, 'public', 'media', 'placeholders')
 mkdirSync(outDir, { recursive: true })
 
 const RATIOS = {
@@ -28,47 +28,41 @@ const PALETTES = [
   { name: 'lavender', sky: ['#24193f', '#9b85d6', '#f3dff3'], sun: '#fff7ff', hills: ['#6c55a8', '#463478', '#251a46'] },
   { name: 'ocean', sky: ['#061a2e', '#1f6f9c', '#a8e1f0'], sun: '#f4fdff', hills: ['#1a587d', '#0f3a57', '#061f33'] },
   { name: 'golden', sky: ['#3a2108', '#d98e32', '#ffe7a8'], sun: '#fffae6', hills: ['#a0601d', '#6b3d12', '#3a1f08'] },
+  { name: 'sepia', sky: ['#5a4632', '#b99c74', '#efe0c2'], sun: '#fff6e2', hills: ['#8a6f50', '#6a5238', '#45331f'] },
+  { name: 'faded', sky: ['#4f5a5c', '#a9b3a8', '#efe8d4'], sun: '#fffbea', hills: ['#7d8a7b', '#5e6a5c', '#3c463b'] },
 ]
 
-// file name -> [ratio, palette index, scene]
+// file name -> [ratio, palette index, scene, label]
 const PHOTOS = [
-  ['2000-a', 'portrait', 0, 'hills'],
-  ['2000-b', 'landscape', 5, 'bokeh'],
-  ['2001-a', 'landscape', 4, 'hills'],
-  ['2001-b', 'portrait', 7, 'bokeh'],
-  ['2002-a', 'square', 3, 'hills'],
-  ['2003-a', 'landscape', 7, 'sea'],
-  ['2003-b', 'portrait', 4, 'hills'],
-  ['2003-c', 'square', 1, 'bokeh'],
-  ['2005-a', 'landscape', 3, 'hills'],
-  ['2005-b', 'portrait', 7, 'sea'],
-  ['2007-a', 'portrait', 6, 'hills'],
-  ['2007-b', 'landscape', 0, 'bokeh'],
-  ['2010-a', 'square', 2, 'stars'],
-  ['2010-b', 'portrait', 5, 'hills'],
-  ['2013-a', 'landscape', 4, 'sea'],
-  ['2013-b', 'portrait', 1, 'hills'],
-  ['2013-c', 'square', 7, 'bokeh'],
-  ['2016-a', 'landscape', 2, 'stars'],
-  ['2016-b', 'portrait', 6, 'sea'],
-  ['2018-a', 'portrait', 5, 'bokeh'],
-  ['2018-b', 'landscape', 1, 'hills'],
-  ['2020-a', 'landscape', 3, 'sea'],
-  ['2020-b', 'square', 0, 'hills'],
-  ['2022-a', 'wide', 6, 'sea'],
-  ['2022-b', 'portrait', 7, 'hills'],
-  ['2022-c', 'square', 4, 'bokeh'],
-  ['2024-a', 'landscape', 1, 'stars'],
-  ['2024-b', 'portrait', 3, 'hills'],
-  ['2026-a', 'portrait', 0, 'bokeh'],
-  ['2026-b', 'landscape', 5, 'hills'],
-  ['extra-a', 'portrait', 2, 'stars'],
-  ['extra-b', 'landscape', 7, 'hills'],
-  ['extra-c', 'square', 5, 'sea'],
-  ['extra-d', 'portrait', 4, 'bokeh'],
-  ['extra-e', 'landscape', 6, 'stars'],
-  ['extra-f', 'square', 3, 'bokeh'],
-  ['gift-photo', 'landscape', 0, 'hills'],
+  ['story-1a', 'square', 7, 'hills', 'story 1'],
+  ['story-1b', 'portrait', 3, 'bokeh', 'story 1'],
+  ['story-1c', 'landscape', 0, 'hills', 'story 1'],
+  ['story-2a', 'portrait', 2, 'stars', 'story 2'],
+  ['story-2b', 'square', 4, 'sea', 'story 2'],
+  ['story-3a', 'landscape', 6, 'sea', 'story 3'],
+  ['story-4a', 'square', 1, 'bokeh', 'story 4'],
+  ['story-4b', 'portrait', 2, 'stars', 'story 4'],
+  ['story-4c', 'landscape', 5, 'bokeh', 'story 4'],
+  ['album-1', 'portrait', 8, 'hills', 'детское фото'],
+  ['album-2', 'landscape', 9, 'sea', 'детское фото'],
+  ['album-3', 'square', 8, 'bokeh', 'детское фото'],
+  ['album-4', 'portrait', 9, 'sea', 'детское фото'],
+  ['album-5', 'landscape', 8, 'hills', 'детское фото'],
+  ['album-6', 'portrait', 9, 'hills', 'детское фото'],
+  ['album-7', 'square', 8, 'stars', 'детское фото'],
+  ['album-8', 'landscape', 9, 'bokeh', 'детское фото'],
+  ['moti-1', 'portrait', 7, 'hills', 'motivation'],
+  ['moti-2', 'landscape', 6, 'sea', 'motivation'],
+  ['moti-3', 'square', 0, 'hills', 'motivation'],
+  ['moti-4', 'portrait', 4, 'sea', 'motivation'],
+]
+
+// Avatars for the tournament: file name -> [background colours]
+const AVATARS = [
+  ['girl-1', '#ff2bd6', '#7a2bff'],
+  ['girl-2', '#00e5ff', '#2b5bff'],
+  ['girl-3', '#ffb800', '#ff2b6b'],
+  ['girl-4', '#a6ff00', '#00b38f'],
 ]
 
 function rng(seed) {
@@ -100,7 +94,7 @@ function hillPath(w, h, baseY, amp, freq, phase, r) {
   return d + ` L${w} ${h} Z`
 }
 
-function svgFor([name, ratioKey, paletteIndex, scene]) {
+function svgFor([name, ratioKey, paletteIndex, scene, label]) {
   const [w, h] = RATIOS[ratioKey]
   const p = PALETTES[paletteIndex]
   const r = rng(name)
@@ -170,16 +164,28 @@ function svgFor([name, ratioKey, paletteIndex, scene]) {
   }
 
   parts.push(`<rect width="${w}" height="${h}" fill="url(#vig)"/>`)
-  const label = name.startsWith('20') ? name.slice(0, 4) : 'memory'
   parts.push(
-    `<text x="${f(w * 0.05)}" y="${f(h - h * 0.05)}" font-family="ui-monospace, Menlo, monospace" font-size="${f(Math.min(w, h) * 0.024)}" letter-spacing="4" fill="#fff" opacity="0.55">PLACEHOLDER · ${label.toUpperCase()}</text>`,
+    `<text x="${f(w * 0.05)}" y="${f(h - h * 0.05)}" font-family="ui-monospace, Menlo, monospace" font-size="${f(Math.min(w, h) * 0.024)}" letter-spacing="4" fill="#fff" opacity="0.6">ЗАГЛУШКА · ${label.toUpperCase()}</text>`,
   )
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">\n${parts.join('\n')}\n</svg>\n`
 }
 
-for (const photo of PHOTOS) {
-  writeFileSync(join(outDir, `${photo[0]}.svg`), svgFor(photo))
+function avatarFor([, a, b]) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>
+<radialGradient id="v" cx="0.5" cy="0.35" r="0.8"><stop offset="0.5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.45"/></radialGradient></defs>
+<rect width="400" height="400" fill="url(#g)"/>
+<circle cx="200" cy="165" r="78" fill="#0b0d1a" opacity="0.55"/>
+<path d="M60 400c10-95 70-150 140-150s130 55 140 150z" fill="#0b0d1a" opacity="0.55"/>
+<path d="M118 170c-6-70 40-112 86-112s92 40 80 118c-16-40-40-58-82-58s-66 20-84 52z" fill="#0b0d1a" opacity="0.35"/>
+<rect width="400" height="400" fill="url(#v)"/>
+<text x="200" y="378" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="20" letter-spacing="4" fill="#fff" opacity="0.7">ФОТО</text>
+</svg>
+`
 }
 
-console.log(`Generated ${PHOTOS.length} placeholder photos in ${outDir}`)
+for (const photo of PHOTOS) writeFileSync(join(outDir, `${photo[0]}.svg`), svgFor(photo))
+for (const avatar of AVATARS) writeFileSync(join(outDir, `${avatar[0]}.svg`), avatarFor(avatar))
+
+console.log(`Generated ${PHOTOS.length + AVATARS.length} placeholders in ${outDir}`)

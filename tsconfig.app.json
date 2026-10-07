@@ -22,5 +22,33 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  /* Previous version of the site (year-by-year timeline). Not used by the app any more. */
+  "exclude": [
+    "src/components/timeline",
+    "src/components/Backdrop.tsx",
+    "src/components/Starfield.tsx",
+    "src/components/FilmSection.tsx",
+    "src/components/Finale.tsx",
+    "src/components/Footer.tsx",
+    "src/components/Gallery.tsx",
+    "src/components/Gifts.tsx",
+    "src/components/Header.tsx",
+    "src/components/Intro.tsx",
+    "src/components/Memories.tsx",
+    "src/components/NavMenu.tsx",
+    "src/components/Reveal.tsx",
+    "src/components/SectionHead.tsx",
+    "src/components/SecretModal.tsx",
+    "src/components/ShortcutsHelp.tsx",
+    "src/context/SecretContext.tsx",
+    "src/hooks/useScrollSpy.ts",
+    "src/hooks/useGlobalShortcuts.ts",
+    "src/lib/sections.ts",
+    "src/content/timeline.ts",
+    "src/content/memories.ts",
+    "src/content/gifts.ts",
+    "src/content/gallery.ts",
+    "src/content/secret.ts"
+  ]
 }

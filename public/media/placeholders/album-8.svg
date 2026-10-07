@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1000" width="1500" height="1000">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#4f5a5c"/>
+    <stop offset="0.62" stop-color="#a9b3a8"/>
+    <stop offset="1" stop-color="#efe8d4"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#fffbea" stop-opacity="0.85"/>
+    <stop offset="0.35" stop-color="#fffbea" stop-opacity="0.25"/>
+    <stop offset="1" stop-color="#fffbea" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="vig" cx="0.5" cy="0.45" r="0.75">
+    <stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+    <stop offset="1" stop-color="#000" stop-opacity="0.45"/>
+  </radialGradient>
+  <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#7d8a7b"/>
+    <stop offset="1" stop-color="#3c463b"/>
+  </linearGradient>
+</defs>
+<rect width="1500" height="1000" fill="url(#sky)"/>
+<circle cx="910.9" cy="410.6" r="497" fill="url(#glow)"/>
+<circle cx="910.9" cy="410.6" r="99.4" fill="#fffbea" opacity="0.95"/>
+<path d="M0 1000 L0 620 L0 657.6 L31.3 648.5 L62.5 634.8 L93.8 625.2 L125 620.7 L156.3 616 L187.5 612 L218.8 610.4 L250 609.3 L281.3 609 L312.5 603.4 L343.8 599.3 L375 593.6 L406.3 586.9 L437.5 578.2 L468.8 567.6 L500 556.8 L531.3 554 L562.5 547.4 L593.8 547.2 L625 548.6 L656.3 555.7 L687.5 569.2 L718.8 580.4 L750 597.6 L781.3 613.7 L812.5 630.6 L843.8 646.9 L875 658.7 L906.3 668.3 L937.5 675.8 L968.8 676.9 L1000 676.9 L1031.3 676.2 L1062.5 673 L1093.8 668.9 L1125 663.4 L1156.3 660 L1187.5 657.5 L1218.8 653.5 L1250 655 L1281.3 656.8 L1312.5 658.2 L1343.8 655.3 L1375 654.4 L1406.3 648 L1437.5 643.5 L1468.8 631.1 L1500 621.1 L1500 1000 Z" fill="#7d8a7b"/>
+<path d="M0 1000 L0 740 L0 796.3 L31.3 799.4 L62.5 799 L93.8 792.8 L125 784.3 L156.3 775 L187.5 766.5 L218.8 760 L250 755.7 L281.3 753.2 L312.5 749.8 L343.8 745.9 L375 743.7 L406.3 739.4 L437.5 728.1 L468.8 720.4 L500 706.5 L531.3 692.4 L562.5 681.5 L593.8 676.9 L625 672.7 L656.3 677.1 L687.5 688.5 L718.8 701.5 L750 718 L781.3 733.6 L812.5 748.1 L843.8 762.4 L875 768.8 L906.3 775.9 L937.5 776.2 L968.8 774.8 L1000 774.7 L1031.3 770 L1062.5 773.4 L1093.8 774.5 L1125 778 L1156.3 780.6 L1187.5 782.6 L1218.8 780.5 L1250 775.8 L1281.3 766.5 L1312.5 752.4 L1343.8 737.8 L1375 718.5 L1406.3 704.1 L1437.5 688.4 L1468.8 681.1 L1500 674.9 L1500 1000 Z" fill="#5e6a5c"/>
+<path d="M0 1000 L0 860 L0 835 L31.3 836 L62.5 835.9 L93.8 833.6 L125 834.3 L156.3 831.9 L187.5 831.5 L218.8 827.7 L250 826.5 L281.3 824 L312.5 824.1 L343.8 822 L375 823.7 L406.3 822.5 L437.5 824.7 L468.8 829.1 L500 831.4 L531.3 839 L562.5 843.6 L593.8 851.2 L625 858.5 L656.3 865.6 L687.5 874.3 L718.8 880.9 L750 890.2 L781.3 895.1 L812.5 899.5 L843.8 904.1 L875 906.6 L906.3 909.9 L937.5 910.4 L968.8 907.6 L1000 905.8 L1031.3 903.7 L1062.5 898 L1093.8 895.6 L1125 888.9 L1156.3 887.6 L1187.5 882.2 L1218.8 878.1 L1250 873.7 L1281.3 871.2 L1312.5 870 L1343.8 869 L1375 866.9 L1406.3 865.1 L1437.5 866.5 L1468.8 866.2 L1500 864.2 L1500 1000 Z" fill="#3c463b"/>
+<circle cx="1152.7" cy="682.9" r="88.5" fill="#fffbea" opacity="0.2"/>
+<circle cx="1370.9" cy="888.7" r="36.1" fill="#fffbea" opacity="0.2"/>
+<circle cx="676.7" cy="811.3" r="97.8" fill="#fffbea" opacity="0.2"/>
+<circle cx="179.1" cy="416.7" r="60.9" fill="#fffbea" opacity="0.1"/>
+<circle cx="1216.4" cy="649.2" r="85" fill="#fffbea" opacity="0.1"/>
+<circle cx="333.2" cy="414.6" r="89.3" fill="#fffbea" opacity="0.2"/>
+<circle cx="847.7" cy="470.2" r="58" fill="#fffbea" opacity="0.1"/>
+<circle cx="838.4" cy="312.6" r="75.6" fill="#fffbea" opacity="0.2"/>
+<circle cx="1246.2" cy="690.4" r="36.3" fill="#fffbea" opacity="0.1"/>
+<circle cx="1115.9" cy="175.4" r="22.7" fill="#fffbea" opacity="0.2"/>
+<circle cx="287.4" cy="230.5" r="87.7" fill="#fffbea" opacity="0.1"/>
+<circle cx="363" cy="676.6" r="92.3" fill="#fffbea" opacity="0.1"/>
+<circle cx="533.5" cy="697.2" r="49.2" fill="#fffbea" opacity="0.1"/>
+<circle cx="877.8" cy="237.6" r="75" fill="#fffbea" opacity="0.2"/>
+<circle cx="1233.3" cy="650.1" r="85.6" fill="#fffbea" opacity="0.1"/>
+<circle cx="946.2" cy="624.2" r="37.1" fill="#fffbea" opacity="0.1"/>
+<circle cx="1331.5" cy="622.9" r="44.9" fill="#fffbea" opacity="0.1"/>
+<circle cx="866.2" cy="942.4" r="54" fill="#fffbea" opacity="0.1"/>
+<rect width="1500" height="1000" fill="url(#vig)"/>
+<text x="75" y="950" font-family="ui-monospace, Menlo, monospace" font-size="24" letter-spacing="4" fill="#fff" opacity="0.6">ЗАГЛУШКА · ДЕТСКОЕ ФОТО</text>
+</svg>

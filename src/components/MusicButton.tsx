@@ -12,7 +12,7 @@ export function MusicButton() {
       onClick={toggle}
       aria-pressed={playing}
       aria-label={label}
-      title={`${label} · «${music.title}» (M)`}
+      title={`${label} · «${music.title}»`}
     >
       <span className="music-btn__bars" aria-hidden="true">
         {[0, 1, 2, 3].map((i) => (

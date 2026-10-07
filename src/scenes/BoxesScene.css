@@ -1,0 +1,285 @@
+/* ---------- title / aside pages (computer spreads) ---------- */
+
+.boxes-title,
+.boxes-aside {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5cqw;
+  text-align: center;
+}
+
+.boxes-title__small {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(16px, 4.6cqw, 22px);
+  color: var(--ink-2);
+}
+
+.boxes-title__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(36px, 12cqw, 64px);
+  line-height: 1;
+}
+
+.boxes-title__arrow {
+  width: 30cqw;
+  color: #b2322c;
+  opacity: 0.8;
+}
+
+.boxes-aside__num {
+  font-family: var(--font-hand);
+  font-size: clamp(60px, 26cqw, 140px);
+  line-height: 1;
+  color: var(--ink-3);
+  opacity: 0.5;
+}
+
+/* ---------- box page ---------- */
+
+.boxpage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 0;
+}
+
+.boxpage__counter {
+  font-family: var(--font-hand);
+  font-size: clamp(17px, 5cqw, 24px);
+  color: var(--ink-3);
+}
+
+.boxpage__stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.boxpage__bottom {
+  min-height: 30cqh;
+  width: 100%;
+  display: grid;
+  place-items: start center;
+}
+
+.boxpage__caption {
+  margin-top: 2cqh;
+  font-family: var(--font-hand);
+  font-size: clamp(26px, 9cqw, 44px);
+  line-height: 1.1;
+  color: #b2322c;
+  text-align: center;
+  rotate: -2deg;
+}
+
+.boxpage__key {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  width: 58cqw;
+  margin-left: -29cqw;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ---------- the note inside a box ---------- */
+
+.boxnote {
+  position: relative;
+  width: min(84cqw, 340px);
+  display: grid;
+  justify-items: center;
+  gap: 3.4cqw;
+  padding: 6cqw 6cqw 5cqw;
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 calc(1.6em - 1px), rgba(70, 110, 170, 0.18) calc(1.6em - 1px) 1.6em),
+    #fffaf0;
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.12),
+    0 12px 20px -10px rgba(60, 40, 20, 0.5);
+  text-align: center;
+}
+
+.boxnote__tape {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 34%;
+  height: 22px;
+  translate: -50% 0;
+  rotate: 3deg;
+  background: rgba(238, 226, 190, 0.75);
+  clip-path: polygon(3% 0, 97% 4%, 100% 100%, 0 96%);
+}
+
+.boxnote__text {
+  font-family: var(--font-hand);
+  font-size: clamp(22px, 7.4cqw, 34px);
+  line-height: 1.15;
+  color: #22346a;
+}
+
+/* Button that looks like it is written in ink on the paper. */
+.ink-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: 1.5px solid #2c2117;
+  font-family: var(--font-display);
+  font-size: clamp(16px, 4.6cqw, 20px);
+  font-weight: 600;
+  color: #2c2117;
+  background: rgba(255, 255, 255, 0.4);
+  transition:
+    background 0.25s,
+    color 0.25s,
+    transform 0.2s;
+}
+
+.ink-btn:hover {
+  background: #2c2117;
+  color: #f4ecdb;
+}
+
+.ink-btn:active {
+  transform: scale(0.97);
+}
+
+/* ---------- gift box, sized relative to the page ---------- */
+
+.gift {
+  --s: 1;
+  --w: calc(58cqw * var(--s));
+  position: relative;
+  width: var(--w);
+  height: calc(var(--w) * 1.02);
+  cursor: pointer;
+}
+
+.gift:disabled {
+  cursor: default;
+}
+
+.gift--closed {
+  animation: gift-float 4.5s ease-in-out infinite;
+}
+
+@keyframes gift-float {
+  50% {
+    translate: 0 -2.5cqw;
+  }
+}
+
+.gift__body {
+  position: absolute;
+  left: 9%;
+  right: 9%;
+  bottom: 0;
+  height: 66%;
+  border-radius: 5% 5% 8% 8% / 7% 7% 10% 10%;
+  background:
+    linear-gradient(90deg, transparent 43%, var(--ribbon) 43%, var(--ribbon) 57%, transparent 57%),
+    radial-gradient(circle at 25% 30%, rgba(255, 255, 255, 0.2) 0 2px, transparent 3px) 0 0 / 14% 14%,
+    linear-gradient(160deg, color-mix(in srgb, var(--wrap) 82%, #fff), var(--wrap) 40%, color-mix(in srgb, var(--wrap) 70%, #000));
+  box-shadow:
+    0 14px 24px -10px rgba(40, 25, 10, 0.6),
+    inset 0 -14px 24px rgba(0, 0, 0, 0.16);
+}
+
+.gift__lid {
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  top: 16%;
+  height: 22%;
+  z-index: 2;
+}
+
+.gift__lid-inner {
+  position: absolute;
+  inset: 0;
+  border-radius: 6% / 26%;
+  background:
+    linear-gradient(90deg, transparent 42.5%, var(--ribbon) 42.5%, var(--ribbon) 57.5%, transparent 57.5%),
+    linear-gradient(170deg, color-mix(in srgb, var(--wrap) 78%, #fff), var(--wrap) 60%);
+  box-shadow: 0 8px 14px -6px rgba(0, 0, 0, 0.45);
+  transition: transform 0.4s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .gift--closed:hover .gift__lid-inner {
+    transform: translateY(-12%) rotate(-3deg);
+  }
+}
+
+.gift__bow {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+}
+
+.gift__bow i {
+  position: absolute;
+  bottom: -3px;
+  width: calc(var(--w) * 0.26);
+  height: calc(var(--w) * 0.17);
+  border: calc(var(--w) * 0.045) solid var(--ribbon);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+}
+
+.gift__bow i:first-child {
+  right: -1px;
+  transform: rotate(-24deg);
+  transform-origin: right bottom;
+}
+
+.gift__bow i:last-child {
+  left: -1px;
+  transform: rotate(24deg);
+  transform-origin: left bottom;
+}
+
+.gift__rays {
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  width: 190%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--ribbon) 75%, transparent) 0%, transparent 55%),
+    repeating-conic-gradient(from 0deg, color-mix(in srgb, var(--ribbon) 50%, transparent) 0deg 6deg, transparent 6deg 22deg);
+  mask-image: radial-gradient(circle, #000 18%, transparent 66%);
+  opacity: 0;
+  scale: 0.4;
+  transition:
+    opacity 0.8s,
+    scale 1.2s var(--ease-out);
+  pointer-events: none;
+}
+
+.gift--opening .gift__rays,
+.gift--open .gift__rays {
+  opacity: 0.6;
+  scale: 1;
+  animation: rays-spin 26s linear infinite;
+}
+
+@keyframes rays-spin {
+  to {
+    rotate: 360deg;
+  }
+}

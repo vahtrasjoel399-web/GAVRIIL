@@ -1,94 +1,86 @@
-// Shapes of all replaceable content. Every personal detail of the site lives in
-// src/content/*.ts — components only read from here.
+// Shapes of all replaceable content. Every text, photo and number of the site
+// lives in src/content/*.ts — components only read from here.
 
 export interface Photo {
-  /** Path inside /public (e.g. "/media/photos/2005-summer.jpg") or a full URL. */
+  /** Path inside /public (e.g. "/media/photos/dacha.jpg") or a full URL. */
   src: string
   /** Short description for screen readers. */
   alt: string
-  /** Optional caption shown under the photo and in the lightbox. */
+  /** Handwritten caption under the photo. */
   caption?: string
-  /** Width / height. Used to reserve space before the image loads. Default 4/5. */
+  /** Width / height. Reserves space before the image loads. Default 1 (square). */
   ratio?: number
 }
 
-export interface Quote {
-  text: string
-  author?: string
-}
+// ---------- 1. Boxes ----------
 
-export interface YearChapter {
-  year: number
-  /** Chapter headline, e.g. "Первые шаги". */
-  title: string
-  subtitle?: string
-  /** Emoji or short symbol shown on the timeline rail. */
-  icon?: string
-  /** Paragraphs shown as the chapter scrolls into view. The first one is the lead. */
-  story: string[]
-  /** Extra paragraphs revealed by the "Читать дальше" button. */
-  more?: string[]
-  quote?: Quote
-  photos?: Photo[]
-  /** Highlight badge. With `celebrate: true` confetti fires the first time the chapter is reached. */
-  milestone?: { label: string; celebrate?: boolean }
-  /** Accent colour of the chapter (any CSS colour). The whole page tints towards it. */
-  accent?: string
-}
-
-export interface GalleryPhoto extends Photo {
-  /** Used by the year filter in the gallery. */
-  year?: number
-}
-
-export interface Memory {
-  id: string
-  emoji: string
-  title: string
-  /** Free-form date label, e.g. "Лето 2009". */
-  date: string
-  /** Short teaser on the front of the card. */
-  teaser: string
-  /** Full story on the back of the card. */
-  story: string
-  accent?: string
-}
-
-export type GiftContent =
-  | { kind: 'letter'; title: string; text: string; signature?: string }
-  | { kind: 'coupon'; title: string; text: string; code: string; validUntil?: string }
-  | { kind: 'photo'; title: string; text: string; photo: Photo }
-
-export interface Gift {
-  id: string
-  /** Label on the box before opening. */
-  label: string
+export interface GiftBox {
+  /** Caption under the closed box. */
+  caption: string
+  /** Note found inside after opening. */
+  note: string
+  /** Button under the note — turns the page. */
+  button: string
+  /** Handwritten line on the left page of the spread (computer only). */
+  aside?: string
   wrap: string
   ribbon: string
-  content: GiftContent
 }
 
-export interface VideoChapter {
-  /** Seconds from the start. */
-  time: number
-  label: string
+// ---------- 3. Chronicle ----------
+
+export interface Story {
+  id: string
+  title: string
+  /** Free-form date label: "Лето 2021", "14 февраля". */
+  date: string
+  /** Who tells the story. */
+  narrator: string
+  paragraphs: string[]
+  /** 1–3 photos, shown as polaroids on the left page. */
+  photos: Photo[]
+  /** Optional group meme scribbled on the margin. */
+  meme?: string
 }
+
+// ---------- 4–5. Tournament ----------
+
+export interface Contender {
+  id: string
+  name: string
+  /** Second line under the name. */
+  nickname?: string
+  photo: string
+  /** Decimal odds, e.g. 1.85. */
+  odds: number
+  /** Funny stats: label → value. */
+  stats: { label: string; value: string }[]
+}
+
+// ---------- 6. Choice sections ----------
+
+export interface FriendNote {
+  from: string
+  text: string
+}
+
+export type MotivationPage =
+  | { kind: 'words'; title?: string; notes: FriendNote[] }
+  | { kind: 'photos'; title?: string; photos: Photo[] }
+  | { kind: 'video'; title?: string; video: VideoContent; caption?: string }
 
 export interface VideoContent {
   src: string
-  /** Optional additional sources (e.g. webm) for wider browser support. */
+  /** Optional extra sources (e.g. webm) for wider browser support. */
   sources?: { src: string; type: string }[]
   poster?: string
-  eyebrow: string
   title: string
-  description: string
-  chapters?: VideoChapter[]
+  chapters?: { time: number; label: string }[]
 }
 
 export interface MusicContent {
   src: string
   title: string
-  artist?: string
   /** 0..1 */
   volume: number
 }

@@ -1,4 +1,9 @@
 .player {
+  /* the player sits on paper pages: keep its own light-on-dark palette */
+  --ink: #fff8ec;
+  --ink-2: rgba(255, 248, 236, 0.75);
+  --ink-3: rgba(255, 248, 236, 0.5);
+  color: var(--ink);
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-lg);
