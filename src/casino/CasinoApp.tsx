@@ -3,23 +3,46 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Odometer } from '../components/Odometer'
 import { person, tournament, type Contender } from '../content'
 import { useSfx } from '../context/SfxContext'
+import { useMediaQuery } from '../hooks/useMediaQuery'
 import { burst, fireworks } from '../lib/confetti'
+import { Bracket } from './Bracket'
+import {
+  emptyPicks,
+  isComplete,
+  matchOrder,
+  participants,
+  pickWinner,
+  roundName,
+  seeded,
+  selections,
+  totalOdds,
+  type Picks,
+  type Selection,
+} from './bracketLogic'
 import './CasinoApp.css'
 
-type Screen = 'market' | 'accepted' | 'live' | 'won' | 'wallet' | 'processing' | 'done'
+type Screen = 'bracket' | 'accepted' | 'live' | 'won' | 'wallet' | 'processing' | 'done'
 
 const money = (value: number) =>
   new Intl.NumberFormat('ru-RU', { style: 'currency', currency: tournament.currency }).format(value)
 const odds = (value: number) => value.toFixed(2)
-const LIVE_MS = 8400
 const ease = [0.22, 1, 0.36, 1] as const
 
-/** Parts 4–5: a fictional betting app. The bet always wins exactly `prize`. */
+const fade = {
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -12 },
+  transition: { duration: 0.35 },
+}
+
+/** Parts 4–5: a fictional betting app. Gavriil fills in the bracket; the express always wins `prize`. */
 export function CasinoApp({ onDone }: { onDone: () => void }) {
   const { texts } = tournament
   const sfx = useSfx()
-  const [screen, setScreen] = useState<Screen>('market')
-  const [pick, setPick] = useState<Contender | null>(null)
+  const wide = useMediaQuery('(min-width: 900px)')
+  const field = useMemo(() => seeded(tournament.contenders), [])
+  const [picks, setPicks] = useState<Picks>(() => emptyPicks(field))
+  const [screen, setScreen] = useState<Screen>('bracket')
   const [balance, setBalance] = useState(0)
   const [withdrawOpen, setWithdrawOpen] = useState(false)
   const [showNext, setShowNext] = useState(false)
@@ -28,10 +51,14 @@ export function CasinoApp({ onDone }: { onDone: () => void }) {
   const later = (ms: number, fn: () => void) => timers.current.push(window.setTimeout(fn, ms))
   useEffect(() => () => timers.current.forEach(window.clearTimeout), [])
 
-  const stake = pick ? Math.round((tournament.prize / pick.odds) * 100) / 100 : 0
+  const sel = selections(field, picks)
+  const complete = isComplete(picks)
+  const total = totalOdds(sel)
+  const stake = Math.max(0.1, Math.round((tournament.prize / total) * 100) / 100)
+  const champion = sel.at(-1)?.winner ?? null
 
   const placeBet = () => {
-    if (!pick) return
+    if (!complete) return
     sfx.play('coin')
     setScreen('accepted')
     later(1500, () => setScreen('live'))
@@ -61,17 +88,25 @@ export function CasinoApp({ onDone }: { onDone: () => void }) {
     later(650, onDone)
   }
 
+  const coupon = (
+    <Coupon
+      compact={!wide}
+      sel={sel}
+      total={total}
+      stake={stake}
+      complete={complete}
+      matches={matchOrder(picks).length}
+      onPlace={placeBet}
+      onClear={() => setPicks(emptyPicks(field))}
+    />
+  )
+
   return (
-    <motion.div
-      className="casino"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: closing ? 0 : 1 }}
-      transition={{ duration: 0.5 }}
-    >
+    <motion.div className="casino" initial={{ opacity: 0 }} animate={{ opacity: closing ? 0 : 1 }} transition={{ duration: 0.5 }}>
       <motion.div
-        className="casino__phone"
-        initial={{ y: 80, scale: 0.92, opacity: 0 }}
-        animate={closing ? { scale: 0.8, opacity: 0, y: 40 } : { y: 0, scale: 1, opacity: 1 }}
+        className="casino__app"
+        initial={{ y: 80, scale: 0.94, opacity: 0 }}
+        animate={closing ? { scale: 0.85, opacity: 0, y: 40 } : { y: 0, scale: 1, opacity: 1 }}
         transition={{ duration: 0.6, ease }}
       >
         <header className="cas-top">
@@ -81,6 +116,16 @@ export function CasinoApp({ onDone }: { onDone: () => void }) {
             </span>
             {tournament.brand}
           </span>
+          {wide && (
+            <nav className="cas-topnav" aria-hidden="true">
+              <span>Спорт</span>
+              <span className="is-active">
+                <i className="cas-dot" /> LIVE
+              </span>
+              <span>Казино</span>
+              <span>Акции</span>
+            </nav>
+          )}
           <span className="cas-balance" aria-label={`${texts.balance}: ${money(balance)}`}>
             <span className="cas-balance__icon" aria-hidden="true">
               ◈
@@ -92,110 +137,120 @@ export function CasinoApp({ onDone }: { onDone: () => void }) {
           </span>
         </header>
 
-        <div className="cas-screen">
-          <AnimatePresence mode="wait">
-            {screen === 'market' && (
-              <motion.div key="market" {...fade}>
-                <Market pick={pick} onPick={setPick} />
-              </motion.div>
-            )}
-            {screen === 'accepted' && (
-              <motion.div key="accepted" className="cas-center" {...fade}>
-                <motion.span
-                  className="cas-check"
-                  initial={{ scale: 0, rotate: -90 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 14 }}
-                >
-                  ✓
-                </motion.span>
-                <h2 className="cas-h2">{texts.accepted}</h2>
-                <p className="cas-muted">
-                  {pick?.name} · {odds(pick?.odds ?? 0)} · {money(stake)}
-                </p>
-              </motion.div>
-            )}
-            {screen === 'live' && pick && (
-              <motion.div key="live" {...fade}>
-                <Live pick={pick} onFinish={finishLive} />
-              </motion.div>
-            )}
-            {screen === 'won' && (
-              <motion.div key="won" className="cas-center" {...fade}>
-                <p className="cas-badge cas-badge--win">WIN</p>
-                <motion.h2
-                  className="cas-won"
-                  initial={{ scale: 0.4, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ type: 'spring', stiffness: 220, damping: 12 }}
-                >
-                  {texts.won}
-                </motion.h2>
-                <p className="cas-amount">+{money(tournament.prize)}</p>
-                <p className="cas-muted">
-                  {pick?.name} — {tournament.market.toLowerCase()} · {odds(pick?.odds ?? 0)}
-                </p>
-                <button type="button" className="cas-btn" onClick={() => setScreen('wallet')}>
-                  {texts.toWallet}
-                </button>
-              </motion.div>
-            )}
-            {(screen === 'wallet' || screen === 'processing' || screen === 'done') && (
-              <motion.div key="wallet" {...fade}>
-                <Wallet
-                  balance={balance}
-                  screen={screen}
-                  showNext={showNext}
-                  onWithdraw={() => setWithdrawOpen(true)}
-                  onNext={close}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+        <div className={`cas-body ${wide && screen === 'bracket' ? 'cas-body--split' : ''}`}>
+          <div className={`cas-screen ${!wide && screen === 'bracket' && complete ? 'cas-screen--sheet' : ''}`}>
+            <AnimatePresence mode="wait">
+              {screen === 'bracket' && (
+                <motion.div key="bracket" {...fade}>
+                  {!wide && (
+                    <nav className="cas-tabs" aria-hidden="true">
+                      <span>Спорт</span>
+                      <span className="is-active">
+                        <i className="cas-dot" /> LIVE
+                      </span>
+                      <span>Казино</span>
+                    </nav>
+                  )}
+                  <p className="cas-promo">🎁 {tournament.promo}</p>
+                  <section className="cas-event">
+                    <div className="cas-event__top">
+                      <span className="cas-muted">{tournament.league}</span>
+                      <span className="cas-badge">
+                        <i className="cas-dot" /> скоро
+                      </span>
+                    </div>
+                    <h1 className="cas-event__title">{tournament.event}</h1>
+                    <div className="cas-market__head">
+                      <b>{tournament.market}</b>
+                      <span className="cas-muted">{tournament.marketHint}</span>
+                    </div>
+                    <div className="cas-bracket-scroll">
+                      <Bracket
+                        field={field}
+                        picks={picks}
+                        onPick={(ref, id) => {
+                          sfx.play('pop')
+                          setPicks((p) => pickWinner(field, p, ref, id))
+                        }}
+                      />
+                    </div>
+                  </section>
+                </motion.div>
+              )}
+              {screen === 'accepted' && (
+                <motion.div key="accepted" className="cas-center" {...fade}>
+                  <motion.span
+                    className="cas-check"
+                    initial={{ scale: 0, rotate: -90 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 14 }}
+                  >
+                    ✓
+                  </motion.span>
+                  <h2 className="cas-h2">{texts.accepted}</h2>
+                  <p className="cas-muted">
+                    {texts.express} · {sel.length} · кэф {odds(total)} · {money(stake)}
+                  </p>
+                </motion.div>
+              )}
+              {screen === 'live' && (
+                <motion.div key="live" {...fade}>
+                  <Live field={field} picks={picks} onFinish={finishLive} />
+                </motion.div>
+              )}
+              {screen === 'won' && (
+                <motion.div key="won" className="cas-center" {...fade}>
+                  <p className="cas-badge cas-badge--win">WIN</p>
+                  <motion.h2
+                    className="cas-won"
+                    initial={{ scale: 0.4, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: 'spring', stiffness: 220, damping: 12 }}
+                  >
+                    {texts.won}
+                  </motion.h2>
+                  <p className="cas-amount">+{money(tournament.prize)}</p>
+                  <p className="cas-muted">
+                    {texts.expressWon}: {sel.length} из {sel.length} · кэф {odds(total)}
+                  </p>
+                  {champion && (
+                    <p className="cas-won__champion">
+                      <img src={champion.photo} alt="" /> 👑 {champion.name}
+                    </p>
+                  )}
+                  <button type="button" className="cas-btn" onClick={() => setScreen('wallet')}>
+                    {texts.toWallet}
+                  </button>
+                </motion.div>
+              )}
+              {(screen === 'wallet' || screen === 'processing' || screen === 'done') && (
+                <motion.div key="wallet" className="cas-narrow" {...fade}>
+                  <Wallet
+                    balance={balance}
+                    screen={screen}
+                    showNext={showNext}
+                    onWithdraw={() => setWithdrawOpen(true)}
+                    onNext={close}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {wide && screen === 'bracket' && <aside className="cas-side">{coupon}</aside>}
         </div>
 
-        {/* Bet slip */}
+        {/* Narrow screens: the coupon slides up once the bracket is filled in. */}
         <AnimatePresence>
-          {screen === 'market' && pick && (
+          {!wide && screen === 'bracket' && complete && (
             <motion.div
               className="cas-sheet"
               initial={{ y: '110%' }}
               animate={{ y: 0 }}
               exit={{ y: '110%' }}
               transition={{ type: 'spring', stiffness: 300, damping: 32 }}
-              role="dialog"
-              aria-label={texts.slipTitle}
             >
-              <div className="cas-sheet__head">
-                <span>
-                  {texts.slipTitle} <em>{texts.single}</em>
-                </span>
-                <button type="button" className="cas-sheet__x" onClick={() => setPick(null)} aria-label="Убрать из купона">
-                  ×
-                </button>
-              </div>
-              <div className="cas-slip">
-                <div>
-                  <p className="cas-slip__name">{pick.name}</p>
-                  <p className="cas-muted">
-                    {tournament.event} · {tournament.market}
-                  </p>
-                </div>
-                <span className="cas-odd cas-odd--static">{odds(pick.odds)}</span>
-              </div>
-              <div className="cas-slip__rows">
-                <p>
-                  <span>{texts.stake}</span>
-                  <b>{money(stake)}</b>
-                </p>
-                <p>
-                  <span>{texts.potential}</span>
-                  <b className="cas-green">{money(tournament.prize)}</b>
-                </p>
-              </div>
-              <button type="button" className="cas-btn cas-btn--wide" onClick={placeBet}>
-                {texts.place} · {money(stake)}
-              </button>
+              {coupon}
             </motion.div>
           )}
         </AnimatePresence>
@@ -212,7 +267,7 @@ export function CasinoApp({ onDone }: { onDone: () => void }) {
                 onClick={() => setWithdrawOpen(false)}
               />
               <motion.div
-                className="cas-sheet"
+                className="cas-sheet cas-sheet--center"
                 initial={{ y: '110%' }}
                 animate={{ y: 0 }}
                 exit={{ y: '110%' }}
@@ -240,112 +295,162 @@ export function CasinoApp({ onDone }: { onDone: () => void }) {
   )
 }
 
-const fade = {
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -12 },
-  transition: { duration: 0.35 },
+interface CouponProps {
+  /** Phones: only the totals; the list opens on demand. */
+  compact?: boolean
+  sel: Selection[]
+  total: number
+  stake: number
+  complete: boolean
+  matches: number
+  onPlace: () => void
+  onClear: () => void
 }
 
-function Market({ pick, onPick }: { pick: Contender | null; onPick: (c: Contender) => void }) {
+function Coupon({ compact, sel, total, stake, complete, matches, onPlace, onClear }: CouponProps) {
+  const { texts } = tournament
+  const rounds = Math.log2(matches + 1)
+  const [expanded, setExpanded] = useState(false)
+  const showList = !compact || expanded
   return (
-    <div className="cas-market">
-      <nav className="cas-tabs" aria-label="Разделы">
-        <span>Спорт</span>
-        <span className="is-active">
-          <i className="cas-dot" /> LIVE
+    <div className="coupon" role="region" aria-label={texts.slipTitle}>
+      <div className="cas-sheet__head">
+        <span>
+          {texts.slipTitle} <em>{texts.express}</em>
         </span>
-        <span>Казино</span>
-        <span>Акции</span>
-      </nav>
-      <p className="cas-promo">🎁 {tournament.promo}</p>
+        {compact ? (
+          <button type="button" className="coupon__clear" onClick={() => setExpanded((v) => !v)} aria-expanded={expanded}>
+            {expanded ? 'свернуть' : `подробнее (${sel.length})`}
+          </button>
+        ) : (
+          sel.length > 0 && (
+            <button type="button" className="coupon__clear" onClick={onClear}>
+              очистить
+            </button>
+          )
+        )}
+      </div>
 
-      <section className="cas-event">
-        <div className="cas-event__top">
-          <span className="cas-muted">{tournament.league}</span>
-          <span className="cas-badge">
-            <i className="cas-dot" /> LIVE
-          </span>
-        </div>
-        <h1 className="cas-event__title">{tournament.event}</h1>
-        <div className="cas-market__head">
-          <b>{tournament.market}</b>
-          <span className="cas-muted">{tournament.marketHint}</span>
-        </div>
-
-        <ul className="cas-list">
-          {tournament.contenders.map((c, i) => (
-            <motion.li
-              key={c.id}
-              initial={{ opacity: 0, x: -16 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.08 * i, duration: 0.4 }}
-            >
-              <button
-                type="button"
-                className={`cas-card ${pick?.id === c.id ? 'is-picked' : ''}`}
-                onClick={() => onPick(c)}
-                aria-pressed={pick?.id === c.id}
+      {!showList ? null : sel.length === 0 ? (
+        <p className="coupon__empty">{texts.emptySlip}</p>
+      ) : (
+        <ul className="coupon__list">
+          <AnimatePresence initial={false}>
+            {sel.map((s) => (
+              <motion.li
+                key={`${s.round}-${s.match}`}
+                layout
+                initial={{ opacity: 0, x: 16 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 16 }}
               >
-                <img className="cas-card__photo" src={c.photo} alt="" loading="lazy" />
-                <span className="cas-card__body">
-                  <span className="cas-card__name">{c.name}</span>
-                  {c.nickname && <span className="cas-card__nick">{c.nickname}</span>}
-                  <span className="cas-card__stats">
-                    {c.stats.map((s) => (
-                      <span key={s.label}>
-                        {s.label}: <b>{s.value}</b>
-                      </span>
-                    ))}
-                  </span>
+                <span className="coupon__item">
+                  <span className="coupon__round">{roundName(s.round, rounds)}</span>
+                  <b>{s.winner.name}</b>
+                  {s.loser && <span className="cas-muted">против: {s.loser.name}</span>}
                 </span>
-                <span className="cas-odd">{odds(c.odds)}</span>
-              </button>
-            </motion.li>
-          ))}
+                <span className="cas-odd cas-odd--static">{odds(s.winner.odds)}</span>
+              </motion.li>
+            ))}
+          </AnimatePresence>
         </ul>
-      </section>
+      )}
+
+      {!compact && (
+        <>
+          <div className="coupon__progress">
+            <span style={{ width: `${(sel.length / matches) * 100}%` }} />
+          </div>
+          <p className="cas-muted">
+            {texts.picked}: {sel.length} из {matches}
+          </p>
+        </>
+      )}
+
+      <div className="cas-slip__rows">
+        <p>
+          <span>{texts.totalOdds}</span>
+          <b>{sel.length ? odds(total) : '—'}</b>
+        </p>
+        <p>
+          <span>{texts.stake}</span>
+          <b>{complete ? money(stake) : '—'}</b>
+        </p>
+        <p>
+          <span>{texts.potential}</span>
+          <b className="cas-green">{money(tournament.prize)}</b>
+        </p>
+      </div>
+      <button type="button" className="cas-btn cas-btn--wide" onClick={onPlace} disabled={!complete}>
+        {complete ? `${texts.place} · ${money(stake)}` : texts.place}
+      </button>
     </div>
   )
 }
 
-/** Short dramatic "broadcast". The rival leads for a while, then the pick wins. */
-function Live({ pick, onFinish }: { pick: Contender; onFinish: () => void }) {
-  const [t, setT] = useState(0)
-  const done = useRef(false)
+/** The broadcast: matches are played one by one in the bracket; Gavriil's picks always win. */
+function Live({ field, picks, onFinish }: { field: Contender[]; picks: Picks; onFinish: () => void }) {
+  const order = useMemo(() => matchOrder(picks), [picks])
+  const rounds = picks.length
+  const matchMs = Math.min(3400, Math.max(1700, 10500 / order.length))
+  const [elapsed, setElapsed] = useState(0)
   const finishRef = useRef(onFinish)
   useEffect(() => {
     finishRef.current = onFinish
   })
 
-  const rival = useMemo(
-    () => [...tournament.contenders].filter((c) => c.id !== pick.id).sort((a, b) => a.odds - b.odds)[0],
-    [pick],
-  )
-
   useEffect(() => {
     const start = performance.now()
+    let done = false
     const id = window.setInterval(() => {
-      const next = Math.min(1, (performance.now() - start) / LIVE_MS)
-      setT(next)
-      if (next >= 1 && !done.current) {
-        done.current = true
+      const ms = performance.now() - start
+      setElapsed(ms)
+      if (ms >= matchMs * order.length && !done) {
+        done = true
         window.clearInterval(id)
-        window.setTimeout(() => finishRef.current(), 700)
+        window.setTimeout(() => finishRef.current(), 900)
       }
     }, 80)
     return () => window.clearInterval(id)
-  }, [])
+  }, [matchMs, order.length])
 
-  const score = (c: Contender, i: number) => {
-    if (c.id === pick.id) return 8 + 92 * Math.pow(t, 1.25)
-    if (c.id === rival.id) return 10 + 80 * Math.sin(Math.min(1, t * 1.15) * Math.PI * 0.62)
-    return 6 + (40 - i * 6) * Math.sin(t * Math.PI * 0.5) + 6 * Math.sin(t * 9 + i)
+  const current = Math.min(order.length - 1, Math.floor(elapsed / matchMs))
+  const decided = Math.min(order.length, Math.floor(elapsed / matchMs))
+  const t = Math.min(1, (elapsed - current * matchMs) / matchMs)
+  const finished = decided >= order.length
+
+  // Commentary: three lines per match.
+  const feed = useMemo(() => {
+    const fill = (line: string, a: string, b: string, w: string, l: string) =>
+      line.replace('{a}', a).replace('{b}', b).replace('{winner}', w).replace('{loser}', l)
+    return order.map((ref, i) => {
+      const [a, b] = participants(field, picks, ref)
+      const winner = picks[ref.round][ref.match] === a?.id ? a : b
+      const loser = winner === a ? b : a
+      const names = [a?.name ?? '', b?.name ?? '', winner?.name ?? '', loser?.name ?? ''] as const
+      const moment = tournament.matchMoments[i % tournament.matchMoments.length]
+      const end = ref.round === rounds - 1 ? tournament.finalEnd : tournament.matchEnd
+      return {
+        label: roundName(ref.round, rounds),
+        lines: [fill(tournament.matchStart, ...names), fill(moment, ...names), fill(end, ...names)],
+      }
+    })
+  }, [order, field, picks, rounds])
+
+  const shown = feed.flatMap((m, i) => {
+    if (i > current) return []
+    const count = i < current || finished ? 3 : t > 0.88 ? 3 : t > 0.42 ? 2 : 1
+    return m.lines.slice(0, count).map((line, j) => ({ key: `${i}-${j}`, label: m.label, line }))
+  })
+
+  const ref = order[current]
+  const [a, b] = participants(field, picks, ref)
+  const winnerId = picks[ref.round][ref.match]
+  const score = (c: Contender | null) => {
+    if (!c) return 0
+    const p = finished ? 1 : t
+    return c.id === winnerId ? 10 + 90 * Math.pow(p, 1.3) : 12 + 70 * Math.sin(Math.min(1, p * 1.2) * Math.PI * 0.62)
   }
-
-  const lines = tournament.broadcast.map((line) => line.replace('{pick}', pick.name).replace('{rival}', rival.name))
-  const shown = lines.slice(0, Math.max(1, Math.ceil(t * lines.length)))
-  const minute = Math.round(t * 90)
 
   return (
     <div className="cas-live">
@@ -353,32 +458,39 @@ function Live({ pick, onFinish }: { pick: Contender; onFinish: () => void }) {
         <span className="cas-badge">
           <i className="cas-dot" /> LIVE
         </span>
-        <span className="cas-live__min">{minute}'</span>
+        <span className="cas-live__min">{roundName(ref.round, rounds)}</span>
       </div>
       <h2 className="cas-h2">{tournament.event}</h2>
-      <ul className="cas-bars">
-        {tournament.contenders.map((c, i) => {
-          const s = Math.max(4, Math.min(100, score(c, i)))
-          return (
-            <li key={c.id} className={c.id === pick.id ? 'is-pick' : ''}>
-              <span className="cas-bars__name">
-                <img src={c.photo} alt="" />
-                {c.name}
-              </span>
+
+      <div className="cas-match">
+        {[a, b].map((c) =>
+          c ? (
+            <div key={c.id} className={`cas-match__side ${c.id === winnerId && (t > 0.9 || finished) ? 'is-win' : ''}`}>
+              <img src={c.photo} alt="" />
+              <span className="cas-match__name">{c.name}</span>
               <span className="cas-bars__track">
-                <span className="cas-bars__fill" style={{ width: `${s}%` }} />
+                <span className="cas-bars__fill" style={{ width: `${Math.min(100, score(c))}%` }} />
               </span>
-            </li>
-          )
-        })}
-      </ul>
+            </div>
+          ) : null,
+        )}
+      </div>
+
+      <div className="cas-bracket-scroll cas-bracket-scroll--live">
+        <Bracket field={field} picks={picks} decided={decided} live={finished ? undefined : current} />
+      </div>
+
       <ol className="cas-feed" aria-live="polite">
-        {shown.map((line, i) => (
-          <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
-            <span className="cas-feed__min">{Math.round(((i + 1) / lines.length) * 90)}'</span>
-            {line}
-          </motion.li>
-        ))}
+        {shown
+          .slice()
+          .reverse()
+          .slice(0, 6)
+          .map((item) => (
+            <motion.li key={item.key} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
+              <span className="cas-feed__min">{item.label}</span>
+              {item.line}
+            </motion.li>
+          ))}
       </ol>
     </div>
   )

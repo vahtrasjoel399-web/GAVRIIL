@@ -1,111 +1,185 @@
-/* ---------- title / aside pages (computer spreads) ---------- */
+/* ---------- layout on the desk ---------- */
 
-.boxes-title,
-.boxes-aside {
+.nest {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 5cqw;
+  gap: 6px;
+  padding: 0 16px 20px;
   text-align: center;
 }
 
-.boxes-title__small {
+.nest__head {
+  display: grid;
+  gap: 2px;
+}
+
+.nest__dedication {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: clamp(16px, 4.6cqw, 22px);
-  color: var(--ink-2);
+  font-size: clamp(17px, 2.2vw, 22px);
+  color: rgba(241, 227, 200, 0.75);
 }
 
-.boxes-title__title {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(36px, 12cqw, 64px);
-  line-height: 1;
-}
-
-.boxes-title__arrow {
-  width: 30cqw;
-  color: #b2322c;
-  opacity: 0.8;
-}
-
-.boxes-aside__num {
+.nest__rule {
   font-family: var(--font-hand);
-  font-size: clamp(60px, 26cqw, 140px);
-  line-height: 1;
-  color: var(--ink-3);
-  opacity: 0.5;
+  font-size: clamp(18px, 2.2vw, 23px);
+  color: #e98a7a;
+  rotate: -1.5deg;
 }
 
-/* ---------- box page ---------- */
-
-.boxpage {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 0;
-}
-
-.boxpage__counter {
+.nest__counter {
+  margin-top: 6px;
   font-family: var(--font-hand);
-  font-size: clamp(17px, 5cqw, 24px);
-  color: var(--ink-3);
+  font-size: 20px;
+  color: rgba(241, 227, 200, 0.55);
 }
 
-.boxpage__stage {
+.nest__stage {
   position: relative;
-  flex: 1;
-  min-height: 0;
-  width: 100%;
+  width: min(62vmin, 440px, calc(100dvh - 380px));
+  min-width: 220px;
+  aspect-ratio: 1;
+}
+
+/* One level of nesting; sizes inside are relative to this square. */
+.box-stage {
+  position: absolute;
+  inset: 0;
   display: grid;
   place-items: center;
+  container-type: size;
 }
 
-.boxpage__bottom {
-  min-height: 30cqh;
+.box-stage::before {
+  /* warm lamp light on the desk */
+  content: '';
+  position: absolute;
+  inset: -20%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 200, 120, 0.22), transparent 62%);
+  pointer-events: none;
+}
+
+.box-stage__shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 13%;
+  width: 62%;
+  height: 9%;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.55), transparent 70%);
+}
+
+.nest__box {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.nest__box:disabled {
+  cursor: default;
+}
+
+/* What rises out of the opened box. Sits behind the box front. */
+.nest__inner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 32cqw;
+  margin-left: -16cqw;
+  translate: 0 -100%;
+}
+
+.nest__inner--book {
+  width: 34cqw;
+  margin-left: -17cqw;
+  translate: 0 -94%;
+}
+
+.nest__peek {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.nest__peek:hover {
+  transform: translateY(-4%);
+}
+
+.nest__peek .gift {
+  --w: 32cqw;
+}
+
+.nest__key {
+  position: absolute;
+  left: -30%;
+  top: 4%;
+  width: 72%;
+  rotate: -28deg;
+}
+
+.nest__bottom {
+  min-height: 190px;
   width: 100%;
   display: grid;
   place-items: start center;
 }
 
-.boxpage__caption {
-  margin-top: 2cqh;
-  font-family: var(--font-hand);
-  font-size: clamp(26px, 9cqw, 44px);
-  line-height: 1.1;
-  color: #b2322c;
-  text-align: center;
-  rotate: -2deg;
+.nest__caption-wrap {
+  display: grid;
+  gap: 6px;
 }
 
-.boxpage__key {
-  position: absolute;
-  top: 6%;
-  left: 50%;
-  width: 58cqw;
-  margin-left: -29cqw;
-  z-index: 3;
-  pointer-events: none;
+.nest__caption {
+  font-family: var(--font-hand);
+  font-size: clamp(30px, 4.4vw, 48px);
+  line-height: 1.05;
+  color: #f6d9a8;
+  rotate: -2deg;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.nest__hint {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  color: rgba(241, 227, 200, 0.5);
+  animation: hint-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes hint-pulse {
+  50% {
+    opacity: 0.45;
+  }
 }
 
 /* ---------- the note inside a box ---------- */
 
 .boxnote {
   position: relative;
-  width: min(84cqw, 340px);
+  width: min(86vw, 360px);
   display: grid;
   justify-items: center;
-  gap: 3.4cqw;
-  padding: 6cqw 6cqw 5cqw;
+  gap: 12px;
+  padding: 24px 22px 20px;
+  color: #22346a;
   background:
     repeating-linear-gradient(to bottom, transparent 0 calc(1.6em - 1px), rgba(70, 110, 170, 0.18) calc(1.6em - 1px) 1.6em),
     #fffaf0;
   box-shadow:
-    0 2px 3px rgba(0, 0, 0, 0.12),
-    0 12px 20px -10px rgba(60, 40, 20, 0.5);
+    0 2px 3px rgba(0, 0, 0, 0.2),
+    0 16px 30px -10px rgba(0, 0, 0, 0.6);
   text-align: center;
 }
 
@@ -123,57 +197,31 @@
 
 .boxnote__text {
   font-family: var(--font-hand);
-  font-size: clamp(22px, 7.4cqw, 34px);
+  font-size: clamp(24px, 3vw, 32px);
   line-height: 1.15;
-  color: #22346a;
 }
 
-/* Button that looks like it is written in ink on the paper. */
-.ink-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 22px;
-  border-radius: 999px;
-  border: 1.5px solid #2c2117;
-  font-family: var(--font-display);
-  font-size: clamp(16px, 4.6cqw, 20px);
-  font-weight: 600;
-  color: #2c2117;
-  background: rgba(255, 255, 255, 0.4);
-  transition:
-    background 0.25s,
-    color 0.25s,
-    transform 0.2s;
+.boxnote .ink-btn {
+  font-size: 18px;
 }
 
-.ink-btn:hover {
-  background: #2c2117;
-  color: #f4ecdb;
-}
-
-.ink-btn:active {
-  transform: scale(0.97);
-}
-
-/* ---------- gift box, sized relative to the page ---------- */
+/* ---------- gift box (sized by the stage square) ---------- */
 
 .gift {
   --s: 1;
   --w: calc(58cqw * var(--s));
   position: relative;
+  display: block;
   width: var(--w);
   height: calc(var(--w) * 1.02);
-  cursor: pointer;
-}
-
-.gift:disabled {
-  cursor: default;
 }
 
 .gift--closed {
   animation: gift-float 4.5s ease-in-out infinite;
+}
+
+.nest__peek .gift--closed {
+  animation: none;
 }
 
 @keyframes gift-float {
@@ -194,8 +242,17 @@
     radial-gradient(circle at 25% 30%, rgba(255, 255, 255, 0.2) 0 2px, transparent 3px) 0 0 / 14% 14%,
     linear-gradient(160deg, color-mix(in srgb, var(--wrap) 82%, #fff), var(--wrap) 40%, color-mix(in srgb, var(--wrap) 70%, #000));
   box-shadow:
-    0 14px 24px -10px rgba(40, 25, 10, 0.6),
+    0 14px 24px -10px rgba(0, 0, 0, 0.6),
     inset 0 -14px 24px rgba(0, 0, 0, 0.16);
+}
+
+.gift--open .gift__body {
+  /* the inside of the box shows at the top edge */
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.45), transparent 14%),
+    linear-gradient(90deg, transparent 43%, var(--ribbon) 43%, var(--ribbon) 57%, transparent 57%),
+    radial-gradient(circle at 25% 30%, rgba(255, 255, 255, 0.2) 0 2px, transparent 3px) 0 0 / 14% 14%,
+    linear-gradient(160deg, color-mix(in srgb, var(--wrap) 82%, #fff), var(--wrap) 40%, color-mix(in srgb, var(--wrap) 70%, #000));
 }
 
 .gift__lid {
@@ -219,7 +276,7 @@
 }
 
 @media (hover: hover) {
-  .gift--closed:hover .gift__lid-inner {
+  .nest__box:not(:disabled):hover .gift__lid-inner {
     transform: translateY(-12%) rotate(-3deg);
   }
 }
@@ -251,11 +308,12 @@
   transform-origin: left bottom;
 }
 
-.gift__rays {
+.stage-rays {
   position: absolute;
   left: 50%;
-  top: 55%;
-  width: 190%;
+  top: 44%;
+  z-index: 0;
+  width: 120cqw;
   aspect-ratio: 1;
   translate: -50% -50%;
   border-radius: 50%;
@@ -271,9 +329,8 @@
   pointer-events: none;
 }
 
-.gift--opening .gift__rays,
-.gift--open .gift__rays {
-  opacity: 0.6;
+.stage-rays.is-on {
+  opacity: 0.5;
   scale: 1;
   animation: rays-spin 26s linear infinite;
 }

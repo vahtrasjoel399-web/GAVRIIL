@@ -1,0 +1,229 @@
+.bracket {
+  display: grid;
+  grid-template-columns: repeat(var(--rounds), minmax(200px, 1fr));
+  gap: 30px;
+  min-width: calc(var(--rounds) * 220px);
+}
+
+.bracket__round {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bracket__title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.bracket__matches {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 18px;
+}
+
+/* ---------- match ---------- */
+
+.bm {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  padding: 6px;
+  border-radius: 14px;
+  background: var(--c-panel-2);
+  border: 1px solid var(--c-line);
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+
+/* connector to the next round */
+.bracket__round:not(.bracket__round--champion) .bm::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -31px;
+  width: 30px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--c-line), rgba(0, 229, 255, 0.35));
+}
+
+.bm.is-live {
+  border-color: var(--c-red);
+  box-shadow: 0 0 0 1px var(--c-red), 0 0 24px rgba(255, 59, 92, 0.35);
+}
+
+.bm__live {
+  position: absolute;
+  top: -9px;
+  right: 10px;
+  padding: 1px 7px;
+  border-radius: 5px;
+  background: var(--c-red);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  animation: live-blink 1s ease-in-out infinite;
+}
+
+/* ---------- slot ---------- */
+
+.bs {
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px 6px 6px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.02);
+  text-align: left;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    opacity 0.3s;
+}
+
+.bs:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(0, 229, 255, 0.35);
+}
+
+.bs:disabled {
+  cursor: default;
+}
+
+.bs__photo {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.bs__body {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+}
+
+.bs__name {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.bs__nick {
+  font-size: 11px;
+  line-height: 1.25;
+  color: var(--c-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bs__odd {
+  flex: none;
+  min-width: 52px;
+  padding: 7px 6px;
+  border-radius: 8px;
+  background: #0d1122;
+  border: 1px solid rgba(0, 229, 255, 0.45);
+  color: var(--c-cyan);
+  font-weight: 800;
+  font-size: 14px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.bs.is-picked {
+  background: rgba(166, 255, 0, 0.1);
+  border-color: rgba(166, 255, 0, 0.6);
+}
+
+.bs.is-picked .bs__odd {
+  background: var(--c-lime);
+  border-color: var(--c-lime);
+  color: #0a1200;
+  box-shadow: 0 0 14px rgba(166, 255, 0, 0.5);
+}
+
+.bs.is-out {
+  opacity: 0.38;
+}
+
+.bs.is-out .bs__name {
+  text-decoration: line-through;
+  text-decoration-color: rgba(255, 255, 255, 0.4);
+}
+
+.bs.is-empty {
+  justify-content: center;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  background: none;
+}
+
+.bs__wait {
+  font-size: 12px;
+  color: var(--c-muted);
+}
+
+/* ---------- champion ---------- */
+
+.champion {
+  position: relative;
+  min-height: 150px;
+  display: grid;
+  place-items: center;
+  padding: 26px 14px 16px;
+  border-radius: 18px;
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  text-align: center;
+}
+
+.champion.is-set {
+  border: 1px solid rgba(255, 204, 0, 0.6);
+  background: radial-gradient(120% 100% at 50% 0%, rgba(255, 204, 0, 0.18), transparent 70%), var(--c-panel-2);
+  box-shadow: 0 0 30px rgba(255, 204, 0, 0.18);
+}
+
+.champion__crown {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  translate: -50% 0;
+  font-size: 28px;
+  filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.6));
+}
+
+.champion__body {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.champion__body img {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.7);
+}
+
+.champion__name {
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.champion__wait {
+  font-family: var(--font-casino);
+  font-size: 40px;
+  color: rgba(255, 255, 255, 0.2);
+}

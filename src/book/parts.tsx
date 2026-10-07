@@ -85,3 +85,22 @@ export function KeyArt({ className = '' }: { className?: string }) {
     </svg>
   )
 }
+
+/** The closed leather book with a padlock, small enough to sit inside a gift box. */
+export function MiniBook({ title }: { title: string }) {
+  return (
+    <span className="mini-book" aria-hidden="true">
+      <span className="mini-book__frame">
+        <span className="mini-book__title">{title}</span>
+        <span className="mini-book__star">✦</span>
+      </span>
+      <span className="mini-book__corner mini-book__corner--tl" />
+      <span className="mini-book__corner mini-book__corner--tr" />
+      <span className="mini-book__corner mini-book__corner--bl" />
+      <span className="mini-book__corner mini-book__corner--br" />
+      <span className="mini-book__strap">
+        <span className="mini-book__lock" />
+      </span>
+    </span>
+  )
+}

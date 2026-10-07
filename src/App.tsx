@@ -80,7 +80,7 @@ function Experience() {
       {scene !== 'casino' && <SoundToggles />}
       <AnimatePresence mode="wait">
         <motion.main key={scene} className="app__scene" {...sceneMotion}>
-          {scene === 'boxes' && <BoxesScene onKey={() => setScene('lock')} />}
+          {scene === 'boxes' && <BoxesScene onBook={() => setScene('lock')} />}
           {scene === 'lock' && (
             <LockScene
               onOpened={(g) => {

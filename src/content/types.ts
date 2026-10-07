@@ -19,10 +19,8 @@ export interface GiftBox {
   caption: string
   /** Note found inside after opening. */
   note: string
-  /** Button under the note — turns the page. */
+  /** Button under the note — goes into the next box (on the last box — takes the key). */
   button: string
-  /** Handwritten line on the left page of the spread (computer only). */
-  aside?: string
   wrap: string
   ribbon: string
 }

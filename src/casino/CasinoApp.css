@@ -22,7 +22,7 @@
   color: var(--c-text);
 }
 
-.casino__phone {
+.casino__app {
   position: relative;
   width: 100%;
   height: 100dvh;
@@ -32,17 +32,85 @@
   background: var(--c-bg);
 }
 
+/* A computer gets a wide betting site, not a phone. */
 @media (min-width: 640px) {
-  .casino__phone {
-    width: 420px;
-    height: min(880px, calc(100dvh - 48px));
-    border-radius: 34px;
+  .casino__app {
+    width: min(1240px, calc(100vw - 48px));
+    height: min(880px, calc(100dvh - 40px));
+    border-radius: 24px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow:
-      0 0 0 8px #0d0f1a,
-      0 0 60px rgba(0, 229, 255, 0.25),
+      0 0 60px rgba(0, 229, 255, 0.18),
       0 40px 120px rgba(0, 0, 0, 0.8);
   }
+}
+
+.cas-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.cas-body--split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+}
+
+.cas-side {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 18px 18px 24px;
+  border-left: 1px solid var(--c-line);
+  background: #0f1324;
+}
+
+.cas-topnav {
+  display: flex;
+  gap: 6px;
+  margin: 0 auto;
+}
+
+.cas-topnav span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-muted);
+}
+
+.cas-topnav span.is-active {
+  color: var(--c-text);
+  background: var(--c-panel-2);
+  box-shadow: inset 0 0 0 1px rgba(255, 59, 92, 0.5);
+}
+
+.cas-screen--sheet {
+  padding-bottom: 300px;
+}
+
+.coupon .coupon__list {
+  max-height: 40dvh;
+  overflow-y: auto;
+}
+
+.cas-bracket-scroll {
+  margin: 0 -14px;
+  padding: 14px 14px 10px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.cas-bracket-scroll--live {
+  margin-top: 6px;
+}
+
+.cas-narrow {
+  max-width: 560px;
+  margin: 0 auto;
 }
 
 /* ---------- top bar ---------- */
@@ -118,10 +186,17 @@
 .cas-screen {
   position: relative;
   flex: 1;
+  min-width: 0;
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 14px 14px 220px;
+  padding: 14px 14px 40px;
+}
+
+@media (min-width: 640px) {
+  .cas-screen {
+    padding: 20px 24px 40px;
+  }
 }
 
 .cas-muted {
@@ -428,6 +503,13 @@
   transform: scale(0.97);
 }
 
+.cas-btn:disabled {
+  background: var(--c-panel-2);
+  color: var(--c-muted);
+  box-shadow: none;
+  cursor: default;
+}
+
 .cas-btn--wide {
   width: 100%;
 }
@@ -437,6 +519,156 @@
   background: linear-gradient(90deg, var(--c-pink), #7a2bff);
   color: #fff;
   box-shadow: 0 10px 30px -10px rgba(255, 43, 214, 0.8);
+}
+
+.cas-sheet--center {
+  z-index: 6;
+}
+
+@media (min-width: 640px) {
+  .cas-sheet--center {
+    left: 50%;
+    right: auto;
+    bottom: 50%;
+    width: 420px;
+    translate: -50% 50%;
+    border-radius: 22px;
+    border: 1px solid rgba(166, 255, 0, 0.35);
+  }
+}
+
+/* ---------- coupon ---------- */
+
+.coupon {
+  display: grid;
+  gap: 14px;
+}
+
+.coupon__clear {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-muted);
+  text-decoration: underline;
+}
+
+.coupon__empty {
+  padding: 18px 14px;
+  border-radius: 14px;
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  font-size: 14px;
+  color: var(--c-muted);
+  text-align: center;
+}
+
+.coupon__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.coupon__list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--c-panel);
+}
+
+.coupon__item {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+  font-size: 14px;
+}
+
+.coupon__item .cas-muted {
+  font-size: 12px;
+}
+
+.coupon__round {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-cyan);
+}
+
+.coupon__progress {
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.coupon__progress span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--c-cyan), var(--c-lime));
+  transition: width 0.4s var(--ease-out);
+}
+
+/* ---------- live match panel ---------- */
+
+.cas-match {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--c-panel);
+  border: 1px solid rgba(255, 59, 92, 0.35);
+}
+
+@media (min-width: 640px) {
+  .cas-match {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.cas-match__side {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 6px 10px;
+}
+
+.cas-match__side img {
+  grid-row: span 2;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.cas-match__name {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.cas-match__side.is-win .cas-bars__fill {
+  background: linear-gradient(90deg, var(--c-cyan), var(--c-lime));
+  box-shadow: 0 0 12px rgba(166, 255, 0, 0.5);
+}
+
+.cas-won__champion {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px 8px 8px;
+  border-radius: 999px;
+  background: var(--c-panel-2);
+  font-weight: 700;
+}
+
+.cas-won__champion img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .cas-dim {

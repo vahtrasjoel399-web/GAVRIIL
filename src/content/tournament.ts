@@ -1,7 +1,9 @@
 import type { Contender } from './types'
 
 // Parts 4–5: the betting app. The brand is fictional on purpose.
-// The bet always wins exactly `prize`; the stake is calculated as prize / odds.
+// Gavriil fills in a tournament bracket: in every pair he picks who goes through.
+// His picks form an express bet; its odds are the product of the picked odds.
+// The bet always wins exactly `prize`; the stake is calculated as prize / total odds.
 
 const photo = (file: string) => `/media/placeholders/${file}.svg`
 
@@ -21,9 +23,14 @@ export const tournament = {
   promo: 'Бонус именинника · ставка без риска',
   league: 'Лига сердец · Финал',
   event: 'Турнир девушек Гавриила',
-  market: 'Победитель',
-  marketHint: 'Выбери, кто займёт первое место',
+  market: 'Турнирная сетка',
+  marketHint: 'Выбери победительницу в каждой паре — она пройдёт дальше',
+  champion: 'Победительница',
 
+  /**
+   * Bracket order: 1st plays 2nd, 3rd plays 4th, and so on.
+   * Use 4 or 8 contenders. `odds` is shown next to the name from the start.
+   */
   contenders: [
     {
       id: 'gym',
@@ -71,30 +78,36 @@ export const tournament = {
     },
   ] satisfies Contender[],
 
-  /** Live commentary. {pick} — his choice, {rival} — the most dangerous opponent. */
-  broadcast: [
-    'Стартовый свисток! {pick} уверенно начинает.',
-    '{rival} пишет «ты спишь?» в два часа ночи. Опасный момент!',
+  /** Live commentary for every match. {winner} — who goes through, {loser} — who drops out. */
+  matchStart: '{a} против {b}. Свисток!',
+  matchMoments: [
+    '{loser} пишет «ты спишь?» в два часа ночи. Опасный момент!',
     'VAR проверяет лайк в сторис… Засчитано!',
-    '{rival} вырывается вперёд! Трибуны замерли.',
-    '{pick} отвечает мемом. Стадион ревёт!',
-    'Финальный рывок… {pick} забирает сердце Гавриила!',
+    '{loser} отправляет голосовое на 4 минуты. Судьи в шоке.',
+    '{winner} отвечает мемом. Стадион ревёт!',
+    '{loser} выкладывает фото с бывшим. Трибуны освистывают.',
   ],
+  matchEnd: '{winner} проходит дальше!',
+  finalEnd: '{winner} забирает сердце Гавриила!',
 
   texts: {
     slipTitle: 'Купон',
-    single: 'Ординар',
+    express: 'Экспресс',
+    emptySlip: 'Заполни сетку — купон соберётся сам',
+    picked: 'Выбрано',
+    totalOdds: 'Общий кэф',
     stake: 'Ставка',
     potential: 'Возможный выигрыш',
     place: 'Сделать ставку',
     accepted: 'Ставка принята',
     live: 'Трансляция',
     won: 'Ставка сыграла!',
+    expressWon: 'Экспресс зашёл',
     toWallet: 'В кошелёк',
     wallet: 'Кошелёк',
     balance: 'Баланс',
     history: 'История',
-    winRow: 'Выигрыш · Турнир девушек Гавриила',
+    winRow: 'Выигрыш · экспресс на турнир девушек',
     withdraw: 'Вывести',
     withdrawTitle: 'Вывод средств',
     withdrawMethod: 'Мгновенный вывод',
