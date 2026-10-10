@@ -14,6 +14,8 @@ interface MusicApi {
   duck: (on: boolean) => void
   /** Start on the first interaction unless the visitor switched music off before. */
   startIfAllowed: () => void
+  /** Title of the song that is on now. */
+  track: string
 }
 
 const MusicContext = createContext<MusicApi | null>(null)
@@ -27,15 +29,24 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const duckedRef = useRef(false)
   const [status, setStatus] = useState<MusicStatus>('idle')
   const [ducked, setDucked] = useState(false)
+  const trackRef = useRef(0)
+  const [trackIndex, setTrackIndex] = useState(0)
 
   const getAudio = useCallback(() => {
     if (!audioRef.current) {
       const audio = new Audio()
-      audio.src = music.src
-      audio.loop = true
+      audio.src = music.tracks[0].src
+      audio.loop = music.tracks.length === 1
       audio.preload = 'none'
       audio.volume = 0
       audio.addEventListener('error', () => setStatus('error'))
+      // Several songs: when one ends, the next one starts (volume stays as it is).
+      audio.addEventListener('ended', () => {
+        trackRef.current = (trackRef.current + 1) % music.tracks.length
+        setTrackIndex(trackRef.current)
+        audio.src = music.tracks[trackRef.current].src
+        if (wantRef.current && !duckedRef.current) audio.play().catch(() => setStatus('error'))
+      })
       audioRef.current = audio
     }
     return audioRef.current
@@ -137,8 +148,9 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       toggle,
       duck,
       startIfAllowed,
+      track: music.tracks[trackIndex].title,
     }),
-    [status, ducked, play, pause, toggle, duck, startIfAllowed],
+    [status, ducked, play, pause, toggle, duck, startIfAllowed, trackIndex],
   )
 
   return <MusicContext value={value}>{children}</MusicContext>

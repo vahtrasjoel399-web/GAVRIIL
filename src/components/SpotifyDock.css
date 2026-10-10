@@ -1,0 +1,125 @@
+.spotify-dock {
+  position: fixed;
+  left: 14px;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.spotify-dock__toggle {
+  width: auto;
+  height: 40px;
+  padding: 0 14px;
+  gap: 8px;
+  display: inline-flex;
+  align-items: center;
+  color: #f1e3c8;
+  background: rgba(30, 20, 14, 0.55);
+  border-color: rgba(240, 225, 200, 0.18);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.spotify-dock__toggle > span:first-child {
+  font-size: 17px;
+  line-height: 1;
+}
+
+.spotify-dock__toggle.is-playing {
+  border-color: rgba(30, 215, 96, 0.7);
+  box-shadow: 0 0 16px rgba(30, 215, 96, 0.35);
+}
+
+.spotify-dock__toggle.is-playing > span:first-child {
+  color: #1ed760;
+  animation: spotify-beat 0.9s ease-in-out infinite;
+}
+
+@keyframes spotify-beat {
+  50% {
+    transform: scale(1.25);
+  }
+}
+
+/* Hidden, not removed: a song keeps playing while the panel is folded. */
+.spotify-dock__panel {
+  width: min(340px, calc(100vw - 28px));
+  padding: 8px;
+  border-radius: 18px;
+  background: rgba(24, 16, 11, 0.85);
+  border: 1px solid rgba(240, 225, 200, 0.16);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transform-origin: bottom left;
+  transition:
+    opacity 0.25s,
+    transform 0.25s var(--ease-out),
+    visibility 0.25s;
+}
+
+.spotify-dock:not(.is-open) .spotify-dock__panel {
+  position: absolute;
+  bottom: 48px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px) scale(0.96);
+  pointer-events: none;
+}
+
+.spotify-dock__player {
+  min-height: 80px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.spotify-dock__player iframe {
+  display: block;
+  border: 0;
+  border-radius: 12px;
+}
+
+.spotify-dock__tracks {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.spotify-dock__tracks button {
+  flex: 1;
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 225, 200, 0.18);
+  color: #f1e3c8;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.spotify-dock__tracks button.is-current {
+  background: #1ed760;
+  border-color: #1ed760;
+  color: #08130b;
+}
+
+.spotify-dock__fallback {
+  display: block;
+  padding: 14px;
+  color: #1ed760;
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .spotify-dock__label {
+    display: none;
+  }
+
+  .spotify-dock__toggle {
+    width: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+}

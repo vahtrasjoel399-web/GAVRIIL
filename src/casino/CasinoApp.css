@@ -35,7 +35,7 @@
 /* A computer gets a wide betting site, not a phone. */
 @media (min-width: 640px) {
   .casino__app {
-    width: min(1240px, calc(100vw - 48px));
+    width: min(1380px, calc(100vw - 48px));
     height: min(880px, calc(100dvh - 40px));
     border-radius: 24px;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -54,7 +54,7 @@
 
 .cas-body--split {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
+  grid-template-columns: minmax(0, 1fr) clamp(270px, 22vw, 310px);
 }
 
 .cas-side {
@@ -627,6 +627,10 @@
   .cas-match {
     grid-template-columns: 1fr 1fr;
   }
+
+  .cas-match--3 {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 
 .cas-match__side {
@@ -636,7 +640,7 @@
   gap: 6px 10px;
 }
 
-.cas-match__side img {
+.cas-match__photo {
   grid-row: span 2;
   width: 44px;
   height: 44px;
@@ -664,11 +668,15 @@
   font-weight: 700;
 }
 
-.cas-won__champion img {
+.cas-won__photo {
   width: 34px;
   height: 34px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.cas-won__photo.avatar {
+  font-size: 15px;
 }
 
 .cas-dim {

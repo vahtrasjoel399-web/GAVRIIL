@@ -1,8 +1,9 @@
 .bracket {
+  --gap: 14px;
   display: grid;
-  grid-template-columns: repeat(var(--rounds), minmax(200px, 1fr));
-  gap: 30px;
-  min-width: calc(var(--rounds) * 220px);
+  grid-template-columns: repeat(var(--cols), minmax(106px, 1fr));
+  gap: var(--gap);
+  min-width: calc(var(--cols) * 106px + (var(--cols) - 1) * var(--gap));
 }
 
 .bracket__round {
@@ -12,7 +13,8 @@
 }
 
 .bracket__title {
-  font-size: 12px;
+  text-align: center;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -24,7 +26,13 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  gap: 18px;
+  gap: 14px;
+}
+
+/* the final sits in the middle, the champion right under it */
+.bracket__round--center .bracket__matches {
+  justify-content: center;
+  gap: 34px;
 }
 
 /* ---------- match ---------- */
@@ -32,9 +40,9 @@
 .bm {
   position: relative;
   display: grid;
-  gap: 4px;
-  padding: 6px;
-  border-radius: 14px;
+  gap: 3px;
+  padding: 4px;
+  border-radius: 12px;
   background: var(--c-panel-2);
   border: 1px solid var(--c-line);
   transition:
@@ -42,15 +50,24 @@
     box-shadow 0.3s;
 }
 
-/* connector to the next round */
-.bracket__round:not(.bracket__round--champion) .bm::after {
+/* connectors towards the final: left half → right, right half → left */
+.bracket__round--left .bm::after,
+.bracket__round--right .bm::after {
   content: '';
   position: absolute;
   top: 50%;
-  right: -31px;
-  width: 30px;
+  width: calc(var(--gap) + 1px);
   height: 2px;
+}
+
+.bracket__round--left .bm::after {
+  right: calc(-1 * var(--gap) - 1px);
   background: linear-gradient(90deg, var(--c-line), rgba(0, 229, 255, 0.35));
+}
+
+.bracket__round--right .bm::after {
+  left: calc(-1 * var(--gap) - 1px);
+  background: linear-gradient(270deg, var(--c-line), rgba(0, 229, 255, 0.35));
 }
 
 .bm.is-live {
@@ -76,12 +93,12 @@
 
 .bs {
   width: 100%;
-  min-height: 52px;
+  min-height: 38px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 8px 6px 6px;
-  border-radius: 10px;
+  gap: 6px;
+  padding: 3px 5px 3px 4px;
+  border-radius: 9px;
   border: 1px solid transparent;
   background: rgba(255, 255, 255, 0.02);
   text-align: left;
@@ -102,9 +119,9 @@
 
 .bs__photo {
   flex: none;
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
   object-fit: cover;
 }
 
@@ -115,13 +132,15 @@
 }
 
 .bs__name {
-  font-size: 14px;
+  font-size: 12.5px;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.15;
+  hyphens: auto;
+  overflow-wrap: break-word;
 }
 
 .bs__nick {
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.25;
   color: var(--c-muted);
   overflow: hidden;
@@ -129,33 +148,12 @@
   white-space: nowrap;
 }
 
-.bs__odd {
-  flex: none;
-  min-width: 52px;
-  padding: 7px 6px;
-  border-radius: 8px;
-  background: #0d1122;
-  border: 1px solid rgba(0, 229, 255, 0.45);
-  color: var(--c-cyan);
-  font-weight: 800;
-  font-size: 14px;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-}
-
 .bs.is-picked {
   background: rgba(166, 255, 0, 0.1);
   border-color: rgba(166, 255, 0, 0.6);
 }
 
-.bs.is-picked .bs__odd {
-  background: var(--c-lime);
-  border-color: var(--c-lime);
-  color: #0a1200;
-  box-shadow: 0 0 14px rgba(166, 255, 0, 0.5);
-}
-
-.bs.is-out {
+.bs.is-picked .bs.is-out {
   opacity: 0.38;
 }
 
@@ -171,7 +169,7 @@
 }
 
 .bs__wait {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--c-muted);
 }
 
@@ -209,7 +207,7 @@
   gap: 8px;
 }
 
-.champion__body img {
+.champion__photo {
   width: 72px;
   height: 72px;
   border-radius: 18px;
@@ -226,4 +224,21 @@
   font-family: var(--font-casino);
   font-size: 40px;
   color: rgba(255, 255, 255, 0.2);
+}
+
+/* ---------- avatar without a photo ---------- */
+
+.avatar {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, hsl(var(--hue) 85% 58%), hsl(calc(var(--hue) + 50) 80% 42%));
+  color: #fff;
+  font-weight: 800;
+  font-size: 11px;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.champion__photo.avatar {
+  font-size: 32px;
 }

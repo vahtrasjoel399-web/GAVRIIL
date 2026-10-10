@@ -1,7 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { KeyArt, MiniBook } from '../book/parts'
-import { boxes, lock, type GiftBox } from '../content'
+import { boxes, lock } from '../content'
 import { usePreferences } from '../context/PreferencesContext'
 import { useSfx } from '../context/SfxContext'
 import { burst, originOf } from '../lib/confetti'
@@ -10,12 +9,19 @@ import './BoxesScene.css'
 const ease = [0.22, 1, 0.36, 1] as const
 type Phase = 'closed' | 'opening' | 'open'
 
+/** How long an open box stays before we dive into the next one: time to read the note. */
+const READ_MS = 2200
+
 /** Each next box is drawn a bit smaller. */
 const scaleFor = (level: number) => 1 - (level / Math.max(1, boxes.items.length - 1)) * 0.3
 
+/** Rendered in Blender: scripts/blender/render_assets.py → public/media/3d. */
+const art = (level: number, part: 'closed' | 'body' | 'lid') => `/media/3d/box-${level + 1}-${part}.webp`
+
 /**
- * Part 1: a box on the desk. Opening it drops a note, and a smaller box rises
- * from inside. "Next" dives into that box. The last one holds the locked book.
+ * Part 1: a box on the desk. One click opens it: a note drops out, a smaller box rises
+ * from inside, and a moment later we dive into it by ourselves. The last one holds the
+ * locked book, which then opens the lock scene. Clicking the inner box skips the wait.
  */
 export function BoxesScene({ onBook }: { onBook: () => void }) {
   const { reduced } = usePreferences()
@@ -25,19 +31,23 @@ export function BoxesScene({ onBook }: { onBook: () => void }) {
   const [leaving, setLeaving] = useState(false)
   const boxRef = useRef<HTMLButtonElement>(null)
   const timer = useRef(0)
+  /** The open box is moving on (by itself or by a click) — ignore further clicks. */
+  const moving = useRef(false)
   useEffect(() => () => window.clearTimeout(timer.current), [])
+  useEffect(() => preloadBoxArt(), [])
 
   const total = boxes.items.length
   const item = boxes.items[level]
-  const next = boxes.items[level + 1]
   const isLast = level === total - 1
 
   const open = () => {
     if (phase !== 'closed') return
+    moving.current = false
     const reveal = () => {
       setPhase('open')
       sfx.play('pop')
       burst(originOf(boxRef.current), 0.8)
+      timer.current = window.setTimeout(advance, reduced ? 1400 : READ_MS)
     }
     if (reduced) return reveal()
     setPhase('opening')
@@ -45,7 +55,9 @@ export function BoxesScene({ onBook }: { onBook: () => void }) {
   }
 
   const advance = () => {
-    if (phase !== 'open' || leaving) return
+    if (moving.current) return
+    moving.current = true
+    window.clearTimeout(timer.current)
     if (isLast) {
       // The book comes out of the box towards the viewer, then the lock scene takes over.
       setLeaving(true)
@@ -86,12 +98,13 @@ export function BoxesScene({ onBook }: { onBook: () => void }) {
                 style={{ '--ribbon': item.ribbon } as CSSProperties}
                 aria-hidden="true"
               />
-              <span className="box-stage__shadow" aria-hidden="true" />
 
               <AnimatePresence>
                 {phase === 'open' && (
                   <motion.div
                     className={`nest__inner ${isLast ? 'nest__inner--book' : ''}`}
+                    // the opening of the rendered box sits a little right of the picture centre
+                    style={{ left: `calc(50% + ${(isLast ? 2 : 15) * scaleFor(level)}cqw)` }}
                     initial={{ y: '70%', opacity: 0 }}
                     animate={
                       leaving
@@ -101,15 +114,13 @@ export function BoxesScene({ onBook }: { onBook: () => void }) {
                     transition={{ duration: leaving ? 0.7 : 0.9, delay: leaving ? 0 : 0.2, ease }}
                   >
                     {isLast ? (
-                      <button type="button" className="nest__peek" onClick={advance} aria-label="Открыть книгу">
-                        <MiniBook title={lock.bookTitle} />
-                        <span className="nest__key" aria-hidden="true">
-                          <KeyArt />
-                        </span>
+                      <button type="button" className="nest__peek" onClick={advance} aria-label={`Открыть книгу «${lock.bookTitle}»`}>
+                        <img className="nest__book" src="/media/3d/book-standing.webp" alt="" draggable={false} />
+                        <img className="nest__key" src="/media/3d/key.webp" alt="" draggable={false} />
                       </button>
                     ) : (
                       <button type="button" className="nest__peek" onClick={advance} aria-label="Открыть коробку поменьше">
-                        <BoxArt item={next} scale={0.5} phase="closed" />
+                        <img className="nest__peek-box" src={art(level + 1, 'closed')} alt="" draggable={false} />
                       </button>
                     )}
                   </motion.div>
@@ -120,9 +131,9 @@ export function BoxesScene({ onBook }: { onBook: () => void }) {
                 ref={boxRef}
                 type="button"
                 className="nest__box"
-                onClick={open}
-                disabled={phase !== 'closed'}
-                aria-label={phase === 'closed' ? `Открыть коробку ${level + 1}` : 'Коробка открыта'}
+                onClick={phase === 'open' ? advance : open}
+                disabled={phase === 'opening' || leaving}
+                aria-label={phase === 'closed' ? `Открыть коробку ${level + 1}` : 'Дальше'}
                 animate={
                   phase === 'opening'
                     ? { rotate: [0, -7, 7, -6, 6, -3, 3, 0], scale: [1, 1.04, 1.04, 1.07, 1.07, 1.1, 1.1, 1] }
@@ -130,7 +141,7 @@ export function BoxesScene({ onBook }: { onBook: () => void }) {
                 }
                 transition={{ duration: 0.7, ease: 'easeInOut' }}
               >
-                <BoxArt item={item} scale={scaleFor(level)} phase={phase} />
+                <BoxArt level={level} scale={scaleFor(level)} phase={phase} />
               </motion.button>
             </motion.div>
           </AnimatePresence>
@@ -149,9 +160,6 @@ export function BoxesScene({ onBook }: { onBook: () => void }) {
               >
                 <span className="boxnote__tape" aria-hidden="true" />
                 <p className="boxnote__text">{item.note}</p>
-                <button type="button" className="ink-btn" onClick={advance}>
-                  {item.button}
-                </button>
               </motion.div>
             ) : (
               <motion.div
@@ -173,26 +181,38 @@ export function BoxesScene({ onBook }: { onBook: () => void }) {
   )
 }
 
-/** A wrapped gift box: body, lid with bow, light rays when open. */
-function BoxArt({ item, scale, phase }: { item: GiftBox; scale: number; phase: Phase }) {
+/** A rendered gift box. Closed: one picture; open: the body stays, the lid flies off. */
+function BoxArt({ level, scale, phase }: { level: number; scale: number; phase: Phase }) {
   const open = phase === 'open'
   return (
-    <span className={`gift gift--${phase}`} style={{ '--wrap': item.wrap, '--ribbon': item.ribbon, '--s': scale } as CSSProperties}>
-      <motion.span
-        className="gift__lid"
-        aria-hidden="true"
-        initial={false}
-        animate={open ? { y: '-170%', x: '35%', rotate: 26, opacity: 0 } : { y: 0, x: 0, rotate: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease }}
-      >
-        <span className="gift__lid-inner">
-          <span className="gift__bow">
-            <i />
-            <i />
-          </span>
-        </span>
-      </motion.span>
-      <span className="gift__body" aria-hidden="true" />
+    <span className={`gift3d gift3d--${phase}`} style={{ '--s': scale } as CSSProperties}>
+      {open ? (
+        <>
+          <img className="gift3d__img" src={art(level, 'body')} alt="" draggable={false} />
+          <motion.img
+            className="gift3d__img gift3d__lid"
+            src={art(level, 'lid')}
+            alt=""
+            draggable={false}
+            initial={{ y: '0%', x: '0%', rotate: 0, opacity: 1 }}
+            animate={{ y: '-62%', x: '26%', rotate: 22, opacity: 0 }}
+            transition={{ duration: 0.9, ease }}
+          />
+        </>
+      ) : (
+        <img className="gift3d__img" src={art(level, 'closed')} alt="" draggable={false} />
+      )}
     </span>
   )
+}
+
+/** Warm the browser cache so every box and the book appear instantly. */
+export function preloadBoxArt() {
+  const urls = boxes.items.flatMap((_, i) => [art(i, 'closed'), art(i, 'body'), art(i, 'lid')])
+  urls.push('/media/3d/book-standing.webp', '/media/3d/key.webp', '/media/3d/cover-front.webp')
+  urls.push('/media/3d/padlock-closed.webp', '/media/3d/padlock-key.webp', '/media/3d/padlock-open.webp')
+  for (const src of urls) {
+    const img = new Image()
+    img.src = src
+  }
 }

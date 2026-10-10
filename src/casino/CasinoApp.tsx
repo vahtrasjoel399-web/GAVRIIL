@@ -5,18 +5,20 @@ import { person, tournament, type Contender } from '../content'
 import { useSfx } from '../context/SfxContext'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import { burst, fireworks } from '../lib/confetti'
+import { Avatar } from './Avatar'
 import { Bracket } from './Bracket'
 import {
   emptyPicks,
   isComplete,
+  listNames,
   matchOrder,
   participants,
   pickWinner,
   roundName,
   seeded,
   selections,
-  totalOdds,
   type Picks,
+  type Field,
   type Selection,
 } from './bracketLogic'
 import './CasinoApp.css'
@@ -25,7 +27,6 @@ type Screen = 'bracket' | 'accepted' | 'live' | 'won' | 'wallet' | 'processing' 
 
 const money = (value: number) =>
   new Intl.NumberFormat('ru-RU', { style: 'currency', currency: tournament.currency }).format(value)
-const odds = (value: number) => value.toFixed(2)
 const ease = [0.22, 1, 0.36, 1] as const
 
 const fade = {
@@ -35,7 +36,7 @@ const fade = {
   transition: { duration: 0.35 },
 }
 
-/** Parts 4–5: a fictional betting app. Gavriil fills in the bracket; the express always wins `prize`. */
+/** Parts 3–4: a fictional betting app. Gavriil fills in the bracket; the express always wins `prize`. */
 export function CasinoApp({ onDone }: { onDone: () => void }) {
   const { texts } = tournament
   const sfx = useSfx()
@@ -53,8 +54,7 @@ export function CasinoApp({ onDone }: { onDone: () => void }) {
 
   const sel = selections(field, picks)
   const complete = isComplete(picks)
-  const total = totalOdds(sel)
-  const stake = Math.max(0.1, Math.round((tournament.prize / total) * 100) / 100)
+  const stake = tournament.stake
   const champion = sel.at(-1)?.winner ?? null
 
   const placeBet = () => {
@@ -91,8 +91,8 @@ export function CasinoApp({ onDone }: { onDone: () => void }) {
   const coupon = (
     <Coupon
       compact={!wide}
+      field={field}
       sel={sel}
-      total={total}
       stake={stake}
       complete={complete}
       matches={matchOrder(picks).length}
@@ -189,7 +189,7 @@ export function CasinoApp({ onDone }: { onDone: () => void }) {
                   </motion.span>
                   <h2 className="cas-h2">{texts.accepted}</h2>
                   <p className="cas-muted">
-                    {texts.express} · {sel.length} · кэф {odds(total)} · {money(stake)}
+                    {texts.express} · {sel.length} · {money(stake)}
                   </p>
                 </motion.div>
               )}
@@ -211,11 +211,11 @@ export function CasinoApp({ onDone }: { onDone: () => void }) {
                   </motion.h2>
                   <p className="cas-amount">+{money(tournament.prize)}</p>
                   <p className="cas-muted">
-                    {texts.expressWon}: {sel.length} из {sel.length} · кэф {odds(total)}
+                    {texts.expressWon}: {sel.length} из {sel.length}
                   </p>
                   {champion && (
                     <p className="cas-won__champion">
-                      <img src={champion.photo} alt="" /> 👑 {champion.name}
+                      <Avatar contender={champion} className="cas-won__photo" /> 👑 {champion.name}
                     </p>
                   )}
                   <button type="button" className="cas-btn" onClick={() => setScreen('wallet')}>
@@ -298,8 +298,8 @@ export function CasinoApp({ onDone }: { onDone: () => void }) {
 interface CouponProps {
   /** Phones: only the totals; the list opens on demand. */
   compact?: boolean
+  field: Field
   sel: Selection[]
-  total: number
   stake: number
   complete: boolean
   matches: number
@@ -307,9 +307,8 @@ interface CouponProps {
   onClear: () => void
 }
 
-function Coupon({ compact, sel, total, stake, complete, matches, onPlace, onClear }: CouponProps) {
+function Coupon({ compact, field, sel, stake, complete, matches, onPlace, onClear }: CouponProps) {
   const { texts } = tournament
-  const rounds = Math.log2(matches + 1)
   const [expanded, setExpanded] = useState(false)
   const showList = !compact || expanded
   return (
@@ -345,11 +344,10 @@ function Coupon({ compact, sel, total, stake, complete, matches, onPlace, onClea
                 exit={{ opacity: 0, x: 16 }}
               >
                 <span className="coupon__item">
-                  <span className="coupon__round">{roundName(s.round, rounds)}</span>
+                  <span className="coupon__round">{roundName(field, s.round)}</span>
                   <b>{s.winner.name}</b>
-                  {s.loser && <span className="cas-muted">против: {s.loser.name}</span>}
+                  {s.losers.length > 0 && <span className="cas-muted">против: {listNames(s.losers.map((c) => c.name))}</span>}
                 </span>
-                <span className="cas-odd cas-odd--static">{odds(s.winner.odds)}</span>
               </motion.li>
             ))}
           </AnimatePresence>
@@ -369,12 +367,8 @@ function Coupon({ compact, sel, total, stake, complete, matches, onPlace, onClea
 
       <div className="cas-slip__rows">
         <p>
-          <span>{texts.totalOdds}</span>
-          <b>{sel.length ? odds(total) : '—'}</b>
-        </p>
-        <p>
           <span>{texts.stake}</span>
-          <b>{complete ? money(stake) : '—'}</b>
+          <b>{money(stake)}</b>
         </p>
         <p>
           <span>{texts.potential}</span>
@@ -382,17 +376,18 @@ function Coupon({ compact, sel, total, stake, complete, matches, onPlace, onClea
         </p>
       </div>
       <button type="button" className="cas-btn cas-btn--wide" onClick={onPlace} disabled={!complete}>
-        {complete ? `${texts.place} · ${money(stake)}` : texts.place}
+        {texts.place}
       </button>
     </div>
   )
 }
 
 /** The broadcast: matches are played one by one in the bracket; Gavriil's picks always win. */
-function Live({ field, picks, onFinish }: { field: Contender[]; picks: Picks; onFinish: () => void }) {
+function Live({ field, picks, onFinish }: { field: Field; picks: Picks; onFinish: () => void }) {
   const order = useMemo(() => matchOrder(picks), [picks])
   const rounds = picks.length
-  const matchMs = Math.min(3400, Math.max(1700, 10500 / order.length))
+  // A big bracket plays faster, so the whole broadcast stays around half a minute.
+  const matchMs = Math.min(3400, Math.max(1300, 10500 / order.length))
   const [elapsed, setElapsed] = useState(0)
   const finishRef = useRef(onFinish)
   useEffect(() => {
@@ -421,17 +416,17 @@ function Live({ field, picks, onFinish }: { field: Contender[]; picks: Picks; on
 
   // Commentary: three lines per match.
   const feed = useMemo(() => {
-    const fill = (line: string, a: string, b: string, w: string, l: string) =>
-      line.replace('{a}', a).replace('{b}', b).replace('{winner}', w).replace('{loser}', l)
+    const fill = (line: string, players: string, w: string, l: string) =>
+      line.replace('{players}', players).replace('{winner}', w).replace('{loser}', l)
     return order.map((ref, i) => {
-      const [a, b] = participants(field, picks, ref)
-      const winner = picks[ref.round][ref.match] === a?.id ? a : b
-      const loser = winner === a ? b : a
-      const names = [a?.name ?? '', b?.name ?? '', winner?.name ?? '', loser?.name ?? ''] as const
+      const players = participants(field, picks, ref).filter((c): c is Contender => !!c)
+      const winner = players.find((c) => c.id === picks[ref.round][ref.match])
+      const loser = players.find((c) => c !== winner)
+      const names = [listNames(players.map((c) => c.name)), winner?.name ?? '', loser?.name ?? ''] as const
       const moment = tournament.matchMoments[i % tournament.matchMoments.length]
       const end = ref.round === rounds - 1 ? tournament.finalEnd : tournament.matchEnd
       return {
-        label: roundName(ref.round, rounds),
+        label: roundName(field, ref.round),
         lines: [fill(tournament.matchStart, ...names), fill(moment, ...names), fill(end, ...names)],
       }
     })
@@ -444,7 +439,7 @@ function Live({ field, picks, onFinish }: { field: Contender[]; picks: Picks; on
   })
 
   const ref = order[current]
-  const [a, b] = participants(field, picks, ref)
+  const players = participants(field, picks, ref)
   const winnerId = picks[ref.round][ref.match]
   const score = (c: Contender | null) => {
     if (!c) return 0
@@ -458,15 +453,15 @@ function Live({ field, picks, onFinish }: { field: Contender[]; picks: Picks; on
         <span className="cas-badge">
           <i className="cas-dot" /> LIVE
         </span>
-        <span className="cas-live__min">{roundName(ref.round, rounds)}</span>
+        <span className="cas-live__min">{roundName(field, ref.round)}</span>
       </div>
       <h2 className="cas-h2">{tournament.event}</h2>
 
-      <div className="cas-match">
-        {[a, b].map((c) =>
+      <div className={`cas-match cas-match--${players.length}`}>
+        {players.map((c) =>
           c ? (
             <div key={c.id} className={`cas-match__side ${c.id === winnerId && (t > 0.9 || finished) ? 'is-win' : ''}`}>
-              <img src={c.photo} alt="" />
+              <Avatar contender={c} className="cas-match__photo" />
               <span className="cas-match__name">{c.name}</span>
               <span className="cas-bars__track">
                 <span className="cas-bars__fill" style={{ width: `${Math.min(100, score(c))}%` }} />

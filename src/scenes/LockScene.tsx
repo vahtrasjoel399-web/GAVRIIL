@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { Flourish, KeyArt } from '../book/parts'
+import { Flourish } from '../book/parts'
 import { lock } from '../content'
 import { usePreferences } from '../context/PreferencesContext'
 import { useSfx } from '../context/SfxContext'
@@ -10,7 +10,7 @@ import './LockScene.css'
 const ease = [0.22, 1, 0.36, 1] as const
 type Stage = 'inserting' | 'asking' | 'unlocking' | 'opening'
 
-/** Part 2: the key fits the lock of «Хроники нашей группы», but the lock asks a question. */
+/** Part 2: the key fits the lock of the album, but the lock asks a question. */
 export function LockScene({ onOpened }: { onOpened: (gaveUp: boolean) => void }) {
   const { reduced } = usePreferences()
   const sfx = useSfx()
@@ -71,18 +71,9 @@ export function LockScene({ onOpened }: { onOpened: (gaveUp: boolean) => void })
             animate={stage === 'opening' ? { rotateY: -168 } : { rotateY: 0 }}
             transition={{ duration: reduced ? 0 : 1.15, ease: [0.6, 0, 0.3, 1] }}
           >
+            {/* Rendered in Blender: leather, gold corners and the embossed title. */}
             <div className="cover__face">
-              <span className="cover__corner cover__corner--tl" />
-              <span className="cover__corner cover__corner--tr" />
-              <span className="cover__corner cover__corner--bl" />
-              <span className="cover__corner cover__corner--br" />
-              <div className="cover__frame">
-                <p className="cover__volume">{lock.bookVolume}</p>
-                <h1 className="cover__title">{lock.bookTitle}</h1>
-                <span className="cover__ornament" aria-hidden="true">
-                  ✦
-                </span>
-              </div>
+              <h1 className="visually-hidden">{lock.bookTitle}</h1>
             </div>
             <div className="cover__inside" aria-hidden="true" />
           </motion.div>
@@ -93,23 +84,28 @@ export function LockScene({ onOpened }: { onOpened: (gaveUp: boolean) => void })
             animate={stage === 'opening' ? { x: 60, opacity: 0 } : { x: 0, opacity: 1 }}
             transition={{ duration: 0.5, ease }}
           >
-            <div className={`padlock ${unlocked ? 'is-open' : ''}`}>
-              <span className="padlock__shackle" />
-              <span className="padlock__body">
-                <span className="padlock__hole" />
-              </span>
-              <motion.div
-                className="padlock__key"
-                initial={{ x: -160, y: 220, rotate: -70, opacity: 0, scale: 1.4 }}
-                animate={
-                  unlocked
-                    ? { x: 0, y: 0, rotate: 0, opacity: 1, scale: 1, scaleY: [1, 0.35, 1] }
-                    : { x: 0, y: 0, rotate: 0, opacity: 1, scale: 1 }
-                }
-                transition={{ duration: unlocked ? 0.6 : 1.1, ease }}
-              >
-                <KeyArt />
-              </motion.div>
+            <div className="padlock3d">
+              <motion.img
+                key={unlocked ? 'open' : stage === 'inserting' ? 'closed' : 'key'}
+                className="padlock3d__img"
+                src={`/media/3d/padlock-${unlocked ? 'open' : stage === 'inserting' ? 'closed' : 'key'}.webp`}
+                alt=""
+                draggable={false}
+                initial={unlocked ? { y: 6, scale: 0.97 } : false}
+                animate={{ y: 0, scale: 1 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 12 }}
+              />
+              {stage === 'inserting' && (
+                <motion.img
+                  className="padlock3d__flying-key"
+                  src="/media/3d/key.webp"
+                  alt=""
+                  draggable={false}
+                  initial={{ x: -260, y: 260, rotate: -60, opacity: 0, scale: 1.3 }}
+                  animate={{ x: 0, y: 0, rotate: 0, opacity: [0, 1, 1, 0], scale: 0.6 }}
+                  transition={{ duration: 1.15, ease }}
+                />
+              )}
             </div>
           </motion.div>
         </div>

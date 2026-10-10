@@ -1,0 +1,185 @@
+.album-book {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- title ---------- */
+
+.album-title {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4cqw;
+  text-align: center;
+}
+
+.album-title__volume {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(14px, 4.2cqw, 20px);
+  color: var(--ink-3);
+}
+
+.album-title__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(32px, 11cqw, 60px);
+  line-height: 1.02;
+}
+
+.album-title__epigraph {
+  max-width: 30ch;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(16px, 4.8cqw, 22px);
+  color: var(--ink-2);
+}
+
+.album-title__gaveup {
+  margin-top: 4cqw;
+  max-width: 82%;
+}
+
+/* ---------- album pages ---------- */
+
+.album-page {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3cqw;
+}
+
+/* Photos are sized against this box, so tall and wide shots both fit the page. */
+.album-photos {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  container-type: size;
+}
+
+.album-photos--1 {
+  display: grid;
+  place-items: center;
+}
+
+.album-photos--1 .album-photos__item {
+  width: min(88cqw, calc(78cqh * var(--ratio)));
+}
+
+.album-photos--2 .album-photos__item {
+  position: absolute;
+  width: min(74cqw, calc(40cqh * var(--ratio)));
+}
+
+/* Upright shots stand side by side, so they can be taller. */
+.album-photos--2 .album-photos__item.is-tall {
+  width: min(48cqw, calc(60cqh * var(--ratio)));
+}
+
+.album-photos__item--0 {
+  top: 4%;
+  left: 1%;
+}
+
+.album-photos__item--1 {
+  bottom: 1%;
+  right: 1%;
+}
+
+.album-page__note {
+  align-self: flex-end;
+  max-width: 80%;
+  text-align: right;
+}
+
+.album-video {
+  flex: 1;
+  display: grid;
+  align-content: center;
+  gap: 5cqw;
+}
+
+.album-video .player {
+  justify-self: center;
+  /* vertical clips: fit the page height */
+  width: min(100%, calc(84cqh * var(--player-ratio, 16 / 9)));
+  border-radius: 10px;
+  box-shadow: 0 12px 24px -10px rgba(40, 25, 10, 0.6);
+}
+
+/* ---------- ending ---------- */
+
+.ending {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6cqw;
+  text-align: center;
+}
+
+.ending__text {
+  font-family: var(--font-hand);
+  font-size: clamp(36px, 13cqw, 70px);
+  line-height: 1.05;
+  color: #2c2117;
+  rotate: -3deg;
+}
+
+.ending__note {
+  max-width: 26ch;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(17px, 5cqw, 22px);
+  line-height: 1.4;
+  color: var(--ink-2);
+}
+
+.ending__signature {
+  font-family: var(--font-hand);
+  font-size: clamp(22px, 7cqw, 32px);
+  color: #2b4a8c;
+  rotate: -3deg;
+}
+
+.ending__restart {
+  margin-top: 4cqw;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(14px, 4cqw, 17px);
+  color: var(--ink-3);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ending__restart:hover {
+  color: var(--ink);
+}
+
+.endpaper {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(176, 62, 52, 0.45) 0 7%, transparent 8%),
+    radial-gradient(circle at 72% 30%, rgba(46, 82, 118, 0.45) 0 9%, transparent 10%),
+    radial-gradient(circle at 40% 70%, rgba(180, 140, 60, 0.4) 0 8%, transparent 9%),
+    radial-gradient(circle at 85% 82%, rgba(176, 62, 52, 0.35) 0 6%, transparent 7%),
+    radial-gradient(circle at 10% 88%, rgba(46, 82, 118, 0.35) 0 6%, transparent 7%),
+    linear-gradient(135deg, #e8d9bb, #d3bd95);
+}
+
+.endcover {
+  position: absolute;
+  inset: 0;
+}
+
+/* narrow vertical player: the mute button is enough, keep room for fullscreen */
+.album-video .player__volume {
+  display: none;
+}

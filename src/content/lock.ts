@@ -2,8 +2,8 @@
 // and the keyboard layout (typing «ufdhbr» on an English layout counts as «гаврик»).
 
 export const lock = {
-  bookTitle: 'Хроники нашей группы',
-  bookVolume: 'Том первый',
+  bookTitle: 'Альбом Гавриила',
+  bookVolume: 'Самое милое',
   intro: 'Ключ подошёл. Но у замка есть второй секрет.',
   /** Placeholder question — replace with one only your group knows. */
   question: 'Как мы ласково зовём именинника?',
@@ -16,5 +16,5 @@ export const lock = {
   hint: 'Подсказка: начинается на «Гав…» и это точно не собака.',
   giveUp: 'Сдаюсь',
   /** Funny margin note on the first page when he gives up. */
-  giveUpNote: 'Гавриил сдался на первом же вопросе. Записано в хроники навсегда.',
+  giveUpNote: 'Гавриил сдался на первом же вопросе. Записано в альбом навсегда.',
 }

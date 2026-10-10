@@ -19,53 +19,29 @@ export interface GiftBox {
   caption: string
   /** Note found inside after opening. */
   note: string
-  /** Button under the note — goes into the next box (on the last box — takes the key). */
-  button: string
   wrap: string
   ribbon: string
 }
 
-// ---------- 3. Chronicle ----------
+// ---------- 5. Album ----------
 
-export interface Story {
-  id: string
-  title: string
-  /** Free-form date label: "Лето 2021", "14 февраля". */
-  date: string
-  /** Who tells the story. */
-  narrator: string
-  paragraphs: string[]
-  /** 1–3 photos, shown as polaroids on the left page. */
-  photos: Photo[]
-  /** Optional group meme scribbled on the margin. */
-  meme?: string
-}
+/** One page of the album: one or two photos, or a video. */
+export type AlbumPage =
+  | { kind: 'photos'; photos: Photo[]; note?: string }
+  | { kind: 'video'; video: VideoContent; caption?: string; note?: string }
 
-// ---------- 4–5. Tournament ----------
+// ---------- 3–4. Tournament ----------
 
 export interface Contender {
   id: string
   name: string
   /** Second line under the name. */
   nickname?: string
-  photo: string
-  /** Decimal odds, e.g. 1.85. */
-  odds: number
-  /** Funny stats: label → value. */
-  stats: { label: string; value: string }[]
+  /** Optional photo; without it the initial is shown in a coloured circle. */
+  photo?: string
 }
 
-// ---------- 6. Choice sections ----------
-
-export interface FriendNote {
-  from: string
-  text: string
-}
-
-export type MotivationPage =
-  | { kind: 'words'; title?: string; notes: FriendNote[] }
-  | { kind: 'photos'; title?: string; photos: Photo[] }
-  | { kind: 'video'; title?: string; video: VideoContent; caption?: string }
+// ---------- media ----------
 
 export interface VideoContent {
   src: string
@@ -73,12 +49,19 @@ export interface VideoContent {
   sources?: { src: string; type: string }[]
   poster?: string
   title: string
+  /** Width / height of the video. Default 16 / 9; vertical phone clips are 9 / 16. */
+  ratio?: number
   chapters?: { time: number; label: string }[]
 }
 
-export interface MusicContent {
+export interface MusicTrack {
   src: string
   title: string
+}
+
+export interface MusicContent {
+  /** Played one after another in a loop. */
+  tracks: MusicTrack[]
   /** 0..1 */
   volume: number
 }

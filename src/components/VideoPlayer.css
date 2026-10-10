@@ -12,7 +12,7 @@
     var(--shadow),
     0 0 0 1px rgba(255, 255, 255, 0.06),
     0 0 120px -40px var(--accent);
-  aspect-ratio: 16 / 9;
+  aspect-ratio: var(--player-ratio, 16 / 9);
   isolation: isolate;
 }
 

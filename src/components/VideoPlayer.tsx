@@ -157,6 +157,7 @@ export function VideoPlayer({ video, onChapterChange, ref }: VideoPlayerProps) {
     <div
       ref={wrapRef}
       className={`player ${started ? 'is-started' : ''} ${playing ? 'is-playing' : ''} ${showControls ? '' : 'is-idle'} ${fullscreen ? 'is-fullscreen' : ''}`}
+      style={video.ratio ? ({ '--player-ratio': video.ratio } as CSSProperties) : undefined}
       onPointerMove={wake}
       onKeyDown={onKeyDown}
       data-own-keys

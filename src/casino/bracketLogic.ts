@@ -1,7 +1,13 @@
 import type { Contender } from '../content'
 
-// Single-elimination bracket. Contenders are seeded in content order:
-// 1st vs 2nd, 3rd vs 4th, … The size is cut down to a power of two (2, 4, 8, 16).
+// Single-elimination bracket where everyone plays from the first round. Contenders are split
+// in content order into first-round matches; when the count is not a power of two, some of
+// those matches are three-way (21 girls → 8 matches: five of three, three of two).
+// From the second round on it is pairs: winners of matches 1 and 2 meet, 3 and 4, and so on.
+// The bracket is drawn in two halves that meet in the final.
+
+/** First-round matches: each holds two or more contenders. */
+export type Field = Contender[][]
 
 /** picks[round][match] = id of the contender Gavriil picked to win that match. */
 export type Picks = (string | null)[][]
@@ -11,39 +17,50 @@ export interface MatchRef {
   match: number
 }
 
-export function seeded(contenders: Contender[]): Contender[] {
-  let size = 2
-  while (size * 2 <= contenders.length) size *= 2
-  return contenders.slice(0, size)
+export function seeded(contenders: Contender[]): Field {
+  let matches = 1
+  while (matches * 4 <= contenders.length) matches *= 2
+  // Bigger matches are spread evenly, so both halves get a fair share.
+  const extra = contenders.length - Math.floor(contenders.length / matches) * matches
+  const big = new Set(Array.from({ length: extra }, (_, i) => Math.floor((i * matches) / extra)))
+  const base = Math.floor(contenders.length / matches)
+  const field: Field = []
+  let next = 0
+  for (let m = 0; m < matches; m++) {
+    const size = base + (big.has(m) ? 1 : 0)
+    field.push(contenders.slice(next, next + size))
+    next += size
+  }
+  return field
 }
 
-export const roundCount = (field: Contender[]) => Math.log2(field.length)
+export const roundCount = (field: Field) => Math.log2(field.length) + 1
 
-export function emptyPicks(field: Contender[]): Picks {
-  const rounds = roundCount(field)
-  return Array.from({ length: rounds }, (_, r) => Array<string | null>(field.length / 2 ** (r + 1)).fill(null))
+export function emptyPicks(field: Field): Picks {
+  return Array.from({ length: roundCount(field) }, (_, r) => Array<string | null>(field.length / 2 ** r).fill(null))
 }
 
 /** Names from the end: Финал, 1/2 финала, 1/4 финала… */
-export function roundName(round: number, rounds: number) {
-  const fromEnd = rounds - 1 - round
+export function roundName(field: Field, round: number) {
+  const fromEnd = roundCount(field) - 1 - round
   return fromEnd === 0 ? 'Финал' : `1/${2 ** fromEnd} финала`
 }
 
-export function participants(field: Contender[], picks: Picks, { round, match }: MatchRef): [Contender | null, Contender | null] {
-  if (round === 0) return [field[match * 2] ?? null, field[match * 2 + 1] ?? null]
-  const find = (id: string | null) => field.find((c) => c.id === id) ?? null
+/** Who plays the match; in later rounds a slot is null until its feeder match is picked. */
+export function participants(field: Field, picks: Picks, { round, match }: MatchRef): (Contender | null)[] {
+  if (round === 0) return field[match]
+  const find = (id: string | null) => field.flat().find((c) => c.id === id) ?? null
   return [find(picks[round - 1][match * 2]), find(picks[round - 1][match * 2 + 1])]
 }
 
 /** Pick a winner; later picks that no longer make sense are cleared. */
-export function pickWinner(field: Contender[], picks: Picks, ref: MatchRef, id: string): Picks {
+export function pickWinner(field: Field, picks: Picks, ref: MatchRef, id: string): Picks {
   const next = picks.map((round) => [...round])
   next[ref.round][ref.match] = id
   for (let r = ref.round + 1; r < next.length; r++) {
     next[r] = next[r].map((picked, m) => {
-      const [a, b] = participants(field, next, { round: r, match: m })
-      return picked && (picked === a?.id || picked === b?.id) ? picked : null
+      const ids = participants(field, next, { round: r, match: m }).map((c) => c?.id)
+      return picked && ids.includes(picked) ? picked : null
     })
   }
   return next
@@ -56,19 +73,20 @@ export function matchOrder(picks: Picks): MatchRef[] {
 
 export interface Selection extends MatchRef {
   winner: Contender
-  loser: Contender | null
+  losers: Contender[]
 }
 
-export function selections(field: Contender[], picks: Picks): Selection[] {
+export function selections(field: Field, picks: Picks): Selection[] {
   return matchOrder(picks).flatMap((ref) => {
-    const id = picks[ref.round][ref.match]
-    const [a, b] = participants(field, picks, ref)
-    const winner = id === a?.id ? a : id === b?.id ? b : null
-    return winner ? [{ ...ref, winner, loser: winner === a ? b : a }] : []
+    const players = participants(field, picks, ref).filter((c): c is Contender => !!c)
+    const winner = players.find((c) => c.id === picks[ref.round][ref.match])
+    return winner ? [{ ...ref, winner, losers: players.filter((c) => c !== winner) }] : []
   })
 }
 
 export const isComplete = (picks: Picks) => picks.every((round) => round.every(Boolean))
 
-/** Express odds: product of the odds of every picked winner. */
-export const totalOdds = (sel: Selection[]) => sel.reduce((acc, s) => acc * s.winner.odds, 1)
+/** «Эля», «Эля и Ева», «Эля, Ева и Анна Мария». */
+export function listNames(names: string[]) {
+  return names.length < 2 ? (names[0] ?? '') : `${names.slice(0, -1).join(', ')} и ${names.at(-1)}`
+}

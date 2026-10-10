@@ -1,25 +1,25 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { CasinoApp } from './casino/CasinoApp'
+import { SpamBanner } from './casino/SpamBanner'
 import { SoundToggles } from './components/SoundToggles'
+import { SpotifyDock } from './components/SpotifyDock'
 import { LightboxProvider } from './context/LightboxContext'
 import { MusicProvider, useMusic } from './context/MusicContext'
 import { PreferencesProvider } from './context/PreferencesContext'
 import { SfxProvider } from './context/SfxContext'
 import { readStorage, writeStorage } from './lib/storage'
+import { AlbumScene } from './scenes/AlbumScene'
 import { BoxesScene } from './scenes/BoxesScene'
-import { ChoiceScene, sectionFromHash } from './scenes/ChoiceScene'
 import { LockScene } from './scenes/LockScene'
-import { StoriesScene } from './scenes/StoriesScene'
 
-type Scene = 'boxes' | 'lock' | 'stories' | 'casino' | 'choice'
+type Scene = 'boxes' | 'lock' | 'casino' | 'album'
 
-/** Set once the whole path is done: next visits open the choice page right away. */
+/** Set once the casino is done: next visits open the album right away. */
 const COMPLETED = 'progress:completed'
 
 function initialScene(): Scene {
-  if (sectionFromHash(window.location.hash)) return 'choice'
-  return readStorage(COMPLETED, false) ? 'choice' : 'boxes'
+  return readStorage(COMPLETED, false) ? 'album' : 'boxes'
 }
 
 export default function App() {
@@ -47,6 +47,7 @@ function Experience() {
   const music = useMusic()
   const [scene, setScene] = useState<Scene>(initialScene)
   const [gaveUp, setGaveUp] = useState(false)
+  const [banner, setBanner] = useState(false)
 
   // Music can only start after a gesture; the first tap anywhere is enough.
   useEffect(() => {
@@ -59,48 +60,47 @@ function Experience() {
     return () => window.removeEventListener('pointerdown', start)
   }, [music])
 
-  // A bookmarked section address opens the choice book wherever we are.
-  useEffect(() => {
-    const onHash = () => {
-      if (sectionFromHash(window.location.hash)) setScene('choice')
-    }
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
-  }, [])
-
   const restart = () => {
     writeStorage(COMPLETED, false)
-    window.history.replaceState(null, '', window.location.pathname + window.location.search)
     setGaveUp(false)
+    setBanner(false)
     setScene('boxes')
   }
 
   return (
     <div className={`app app--${scene}`}>
       {scene !== 'casino' && <SoundToggles />}
+      {scene !== 'casino' && <SpotifyDock />}
       <AnimatePresence mode="wait">
         <motion.main key={scene} className="app__scene" {...sceneMotion}>
           {scene === 'boxes' && <BoxesScene onBook={() => setScene('lock')} />}
           {scene === 'lock' && (
             <LockScene
               onOpened={(g) => {
+                // The book is open — and a betting spam banner jumps over it.
                 setGaveUp(g)
-                setScene('stories')
+                setBanner(true)
               }}
             />
           )}
-          {scene === 'stories' && <StoriesScene gaveUp={gaveUp} onCasino={() => setScene('casino')} />}
           {scene === 'casino' && (
             <CasinoApp
               onDone={() => {
                 writeStorage(COMPLETED, true)
-                setScene('choice')
+                setScene('album')
               }}
             />
           )}
-          {scene === 'choice' && <ChoiceScene onRestart={restart} />}
+          {scene === 'album' && <AlbumScene gaveUp={gaveUp} onRestart={restart} />}
         </motion.main>
       </AnimatePresence>
+      <SpamBanner
+        open={banner}
+        onAccept={() => {
+          setBanner(false)
+          setScene('casino')
+        }}
+      />
     </div>
   )
 }

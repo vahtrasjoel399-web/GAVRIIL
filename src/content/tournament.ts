@@ -1,16 +1,17 @@
 import type { Contender } from './types'
 
-// Parts 4–5: the betting app. The brand is fictional on purpose.
+// Parts 3–4: the betting app. Its spam banner jumps over the book right after the lock
+// opens; «Что дальше?» after the withdrawal opens the album. The brand is fictional on purpose.
 // Gavriil fills in a tournament bracket: in every pair he picks who goes through.
-// His picks form an express bet; its odds are the product of the picked odds.
-// The bet always wins exactly `prize`; the stake is calculated as prize / total odds.
-
-const photo = (file: string) => `/media/placeholders/${file}.svg`
+// His picks form an express bet with a fixed `stake`; it always wins exactly `prize`.
+// No odds are shown anywhere.
 
 export const tournament = {
   brand: 'GavriBet',
   currency: 'EUR',
   prize: 60,
+  /** What the express costs. */
+  stake: 1,
 
   banner: {
     title: '🎰 Эксклюзивное предложение для Гавриила!',
@@ -28,58 +29,37 @@ export const tournament = {
   champion: 'Победительница',
 
   /**
-   * Bracket order: 1st plays 2nd, 3rd plays 4th, and so on.
-   * Use 4 or 8 contenders. `odds` is shown next to the name from the start.
+   * Everyone plays from the first round. The list is cut in order into first-round matches;
+   * with 21 girls that is 8 matches of 1/8 — five of three, three of two (11 girls on the left
+   * half of the bracket, 10 on the right). Then pairs up to the final in the middle.
+   * `photo` is optional — without it a coloured circle with her initial is shown.
    */
   contenders: [
-    {
-      id: 'gym',
-      name: 'Девушка из спортзала',
-      nickname: 'жмёт больше, чем Гавриил',
-      photo: photo('girl-1'),
-      odds: 1.85,
-      stats: [
-        { label: 'Форма', value: '🔥🔥🔥🔥' },
-        { label: 'Ответ на сообщение', value: '4 мин' },
-      ],
-    },
-    {
-      id: 'ex',
-      name: 'Бывшая',
-      nickname: 'камбэк сезона?',
-      photo: photo('girl-2'),
-      odds: 3.4,
-      stats: [
-        { label: 'Лайков в сторис', value: '147' },
-        { label: '«Ты спишь?»', value: '3 раза' },
-      ],
-    },
-    {
-      id: 'stories',
-      name: 'Та, что лайкает сторис',
-      nickname: 'тёмная лошадка',
-      photo: photo('girl-3'),
-      odds: 5.5,
-      stats: [
-        { label: 'Реакции', value: '❤️‍🔥 ×58' },
-        { label: 'Встреч вживую', value: '0' },
-      ],
-    },
-    {
-      id: 'match',
-      name: 'Мэтч из приложения',
-      nickname: 'пишет «привет» уже неделю',
-      photo: photo('girl-4'),
-      odds: 12,
-      stats: [
-        { label: 'Совпадение', value: '97%' },
-        { label: 'Диалог', value: '«привет»' },
-      ],
-    },
+    { id: 'g1', name: 'Эля' },
+    { id: 'g2', name: 'Ева' },
+    { id: 'g3', name: 'Анна Мария' },
+    { id: 'g4', name: 'Полина Дубик' },
+    { id: 'g5', name: 'Милана', nickname: 'израильтянка' },
+    { id: 'g6', name: 'Лиана' },
+    { id: 'g7', name: 'Кира' },
+    { id: 'g8', name: 'Майсурян' },
+    { id: 'g9', name: 'Крисанна' },
+    { id: 'g10', name: 'Настя', nickname: 'одноклассница' },
+    { id: 'g11', name: 'Чамян' },
+    { id: 'g12', name: 'Кира', nickname: 'параллель' },
+    { id: 'g13', name: 'Саша', nickname: 'подруга Дейнера' },
+    { id: 'g14', name: 'S', nickname: 'с Узбекистана · вроде сейчас общаются' },
+    { id: 'g15', name: 'Liisu', nickname: 'Tartu' },
+    { id: 'g16', name: 'Настя', nickname: 'гимназия' },
+    { id: 'g17', name: 'Куликова' },
+    { id: 'g18', name: 'Вторникова' },
+    { id: 'g19', name: 'Соня', nickname: 'нарвская (или как там её)' },
+    { id: 'g20', name: 'Кармен', nickname: 'тоже какая-то эстонка' },
+    { id: 'g21', name: 'Катя', nickname: 'из хора' },
   ] satisfies Contender[],
 
-  /** Live commentary for every match. {winner} — who goes through, {loser} — who drops out. */
-  matchStart: '{a} против {b}. Свисток!',
+  /** Live commentary for every match. {players} — everyone in it, {winner} — who goes through, {loser} — who drops out. */
+  matchStart: 'На поле: {players}. Свисток!',
   matchMoments: [
     '{loser} пишет «ты спишь?» в два часа ночи. Опасный момент!',
     'VAR проверяет лайк в сторис… Засчитано!',
@@ -95,7 +75,6 @@ export const tournament = {
     express: 'Экспресс',
     emptySlip: 'Заполни сетку — купон соберётся сам',
     picked: 'Выбрано',
-    totalOdds: 'Общий кэф',
     stake: 'Ставка',
     potential: 'Возможный выигрыш',
     place: 'Сделать ставку',

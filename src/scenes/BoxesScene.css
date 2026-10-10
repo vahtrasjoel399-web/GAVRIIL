@@ -64,17 +64,6 @@
   pointer-events: none;
 }
 
-.box-stage__shadow {
-  position: absolute;
-  left: 50%;
-  bottom: 13%;
-  width: 62%;
-  height: 9%;
-  translate: -50% 0;
-  border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.55), transparent 70%);
-}
-
 .nest__box {
   position: relative;
   z-index: 2;
@@ -93,15 +82,15 @@
   left: 50%;
   top: 50%;
   z-index: 1;
-  width: 32cqw;
-  margin-left: -16cqw;
-  translate: 0 -100%;
+  width: 36cqw;
+  margin-left: -18cqw;
+  translate: 0 -132%;
 }
 
 .nest__inner--book {
-  width: 34cqw;
-  margin-left: -17cqw;
-  translate: 0 -94%;
+  width: 42cqw;
+  margin-left: -21cqw;
+  translate: 0 -108%;
 }
 
 .nest__peek {
@@ -117,16 +106,24 @@
   transform: translateY(-4%);
 }
 
-.nest__peek .gift {
-  --w: 32cqw;
+.nest__peek-box {
+  width: 150%;
+  mask-image: radial-gradient(closest-side, #000 70%, transparent 100%);
+  max-width: none;
+  margin: -25% 0 -30%;
+}
+
+.nest__book {
+  width: 100%;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
 }
 
 .nest__key {
   position: absolute;
-  left: -30%;
-  top: 4%;
-  width: 72%;
-  rotate: -28deg;
+  left: -34%;
+  top: 2%;
+  width: 78%;
+  rotate: -32deg;
 }
 
 .nest__bottom {
@@ -201,111 +198,42 @@
   line-height: 1.15;
 }
 
-.boxnote .ink-btn {
-  font-size: 18px;
-}
+/* ---------- rendered gift box (sized by the stage square) ---------- */
 
-/* ---------- gift box (sized by the stage square) ---------- */
-
-.gift {
+.gift3d {
   --s: 1;
-  --w: calc(58cqw * var(--s));
   position: relative;
   display: block;
-  width: var(--w);
-  height: calc(var(--w) * 1.02);
+  width: calc(138cqw * var(--s));
+  aspect-ratio: 1;
+  margin: -20% 0 -12%;
 }
 
-.gift--closed {
+.gift3d--closed {
   animation: gift-float 4.5s ease-in-out infinite;
-}
-
-.nest__peek .gift--closed {
-  animation: none;
 }
 
 @keyframes gift-float {
   50% {
-    translate: 0 -2.5cqw;
+    translate: 0 -2cqw;
   }
 }
 
-.gift__body {
-  position: absolute;
-  left: 9%;
-  right: 9%;
-  bottom: 0;
-  height: 66%;
-  border-radius: 5% 5% 8% 8% / 7% 7% 10% 10%;
-  background:
-    linear-gradient(90deg, transparent 43%, var(--ribbon) 43%, var(--ribbon) 57%, transparent 57%),
-    radial-gradient(circle at 25% 30%, rgba(255, 255, 255, 0.2) 0 2px, transparent 3px) 0 0 / 14% 14%,
-    linear-gradient(160deg, color-mix(in srgb, var(--wrap) 82%, #fff), var(--wrap) 40%, color-mix(in srgb, var(--wrap) 70%, #000));
-  box-shadow:
-    0 14px 24px -10px rgba(0, 0, 0, 0.6),
-    inset 0 -14px 24px rgba(0, 0, 0, 0.16);
-}
-
-.gift--open .gift__body {
-  /* the inside of the box shows at the top edge */
-  background:
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.45), transparent 14%),
-    linear-gradient(90deg, transparent 43%, var(--ribbon) 43%, var(--ribbon) 57%, transparent 57%),
-    radial-gradient(circle at 25% 30%, rgba(255, 255, 255, 0.2) 0 2px, transparent 3px) 0 0 / 14% 14%,
-    linear-gradient(160deg, color-mix(in srgb, var(--wrap) 82%, #fff), var(--wrap) 40%, color-mix(in srgb, var(--wrap) 70%, #000));
-}
-
-.gift__lid {
-  position: absolute;
-  left: 3%;
-  right: 3%;
-  top: 16%;
-  height: 22%;
-  z-index: 2;
-}
-
-.gift__lid-inner {
+.gift3d__img {
   position: absolute;
   inset: 0;
-  border-radius: 6% / 26%;
-  background:
-    linear-gradient(90deg, transparent 42.5%, var(--ribbon) 42.5%, var(--ribbon) 57.5%, transparent 57.5%),
-    linear-gradient(170deg, color-mix(in srgb, var(--wrap) 78%, #fff), var(--wrap) 60%);
-  box-shadow: 0 8px 14px -6px rgba(0, 0, 0, 0.45);
-  transition: transform 0.4s var(--ease-out);
+  width: 100%;
+  height: 100%;
+  /* the render's long shadow fades out instead of ending at the image edge */
+  mask-image: radial-gradient(closest-side, #000 72%, transparent 100%);
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 @media (hover: hover) {
-  .nest__box:not(:disabled):hover .gift__lid-inner {
-    transform: translateY(-12%) rotate(-3deg);
+  .nest__box:not(:disabled):hover .gift3d--closed {
+    filter: brightness(1.06);
   }
-}
-
-.gift__bow {
-  position: absolute;
-  left: 50%;
-  bottom: 100%;
-}
-
-.gift__bow i {
-  position: absolute;
-  bottom: -3px;
-  width: calc(var(--w) * 0.26);
-  height: calc(var(--w) * 0.17);
-  border: calc(var(--w) * 0.045) solid var(--ribbon);
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-}
-
-.gift__bow i:first-child {
-  right: -1px;
-  transform: rotate(-24deg);
-  transform-origin: right bottom;
-}
-
-.gift__bow i:last-child {
-  left: -1px;
-  transform: rotate(24deg);
-  transform-origin: left bottom;
 }
 
 .stage-rays {

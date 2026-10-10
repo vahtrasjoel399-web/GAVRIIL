@@ -66,18 +66,10 @@
   -webkit-backface-visibility: hidden;
 }
 
+/* Rendered in Blender (scripts/blender/render_assets.py). */
 .cover__face {
-  display: grid;
-  place-items: center;
-  padding: 11%;
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='l'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .35 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23l)'/%3E%3C/svg%3E"),
-    radial-gradient(120% 90% at 35% 25%, #8a5434, #5e3420 55%, #3b1f12);
-  box-shadow:
-    inset 10px 0 18px -6px rgba(0, 0, 0, 0.55),
-    inset 0 0 0 2px rgba(0, 0, 0, 0.25),
-    inset 0 0 40px rgba(0, 0, 0, 0.35),
-    0 30px 60px -20px rgba(0, 0, 0, 0.8);
+  background: url('/media/3d/cover-front.webp') center / 100% 100% no-repeat;
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.6));
 }
 
 .cover__inside {
@@ -88,83 +80,6 @@
     radial-gradient(circle at 40% 80%, rgba(180, 140, 60, 0.5) 0 7%, transparent 8%),
     linear-gradient(135deg, #e6d6b8, #cdb68e);
   box-shadow: inset -10px 0 18px -6px rgba(0, 0, 0, 0.4);
-}
-
-.cover__frame {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: grid;
-  place-content: start center;
-  padding-top: 22%;
-  justify-items: center;
-  gap: 14px;
-  text-align: center;
-  border: 1.5px solid rgba(233, 196, 120, 0.55);
-  outline: 1px solid rgba(233, 196, 120, 0.35);
-  outline-offset: 6px;
-}
-
-.cover__volume {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: clamp(14px, 3vw, 18px);
-  letter-spacing: 0.08em;
-  color: rgba(240, 210, 150, 0.8);
-}
-
-.cover__title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(26px, 6.4vw, 44px);
-  line-height: 1.05;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  background: linear-gradient(180deg, #fff1c8, #e0b05c 55%, #a8742e);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.6)) drop-shadow(0 -1px 0 rgba(255, 230, 170, 0.15));
-}
-
-.cover__ornament {
-  font-size: 22px;
-  color: #e0b05c;
-}
-
-.cover__corner {
-  position: absolute;
-  width: 16%;
-  aspect-ratio: 1;
-  background: linear-gradient(135deg, #f6d998, #b9822f 60%, #7c5214);
-}
-
-.cover__corner--tl {
-  top: 0;
-  left: 0;
-  clip-path: polygon(0 0, 100% 0, 0 100%);
-  border-top-left-radius: 4px;
-}
-
-.cover__corner--tr {
-  top: 0;
-  right: 0;
-  clip-path: polygon(0 0, 100% 0, 100% 100%);
-  border-top-right-radius: 12px;
-}
-
-.cover__corner--bl {
-  bottom: 0;
-  left: 0;
-  clip-path: polygon(0 0, 100% 100%, 0 100%);
-  border-bottom-left-radius: 4px;
-}
-
-.cover__corner--br {
-  bottom: 0;
-  right: 0;
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
-  border-bottom-right-radius: 12px;
 }
 
 /* ---------- strap and padlock ---------- */
@@ -191,66 +106,25 @@
   border-radius: 4px;
 }
 
-.padlock {
+.padlock3d {
   position: absolute;
-  right: -22px;
+  right: -78px;
   top: 50%;
-  width: 62px;
-  height: 78px;
-  translate: 0 -38%;
+  width: 118px;
+  translate: 0 -54%;
 }
 
-.padlock__shackle {
+.padlock3d__img {
+  width: 100%;
+  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.5));
+}
+
+.padlock3d__flying-key {
   position: absolute;
-  left: 13px;
-  top: 0;
-  width: 36px;
-  height: 40px;
-  border: 7px solid #c9cdd4;
-  border-bottom: 0;
-  border-radius: 20px 20px 0 0;
-  background: none;
-  box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.4);
-  transition: transform 0.45s cubic-bezier(0.3, 1.6, 0.6, 1) 0.35s;
-}
-
-.padlock.is-open .padlock__shackle {
-  transform: translateY(-14px);
-}
-
-.padlock__body {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 62px;
-  height: 50px;
-  border-radius: 10px;
-  background: linear-gradient(160deg, #f4d58c, #c8942f 55%, #8c6118);
-  box-shadow:
-    0 8px 14px rgba(0, 0, 0, 0.45),
-    inset 0 2px 0 rgba(255, 255, 255, 0.4),
-    inset 0 -4px 6px rgba(0, 0, 0, 0.25);
-}
-
-.padlock__hole {
-  position: absolute;
-  left: 50%;
-  top: 14px;
-  width: 10px;
-  height: 18px;
-  translate: -50% 0;
-  background:
-    radial-gradient(circle at 50% 30%, #2a1a08 0 4px, transparent 4.5px),
-    linear-gradient(#2a1a08, #2a1a08) 50% 100% / 4px 10px no-repeat;
-}
-
-.padlock__key {
-  position: absolute;
-  right: 26px;
-  top: 34px;
-  width: 112px;
-  z-index: 2;
-  transform-origin: 100% 50%;
+  left: -10px;
+  top: 52%;
+  width: 120px;
+  pointer-events: none;
 }
 
 /* ---------- question tag ---------- */
