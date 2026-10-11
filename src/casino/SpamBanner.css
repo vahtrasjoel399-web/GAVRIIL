@@ -1,5 +1,5 @@
 .spam .modal__backdrop {
-  background: rgba(10, 4, 20, 0.55);
+  background: rgba(20, 10, 34, 0.6);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
@@ -8,7 +8,7 @@
   position: relative;
   width: min(380px, calc(100vw - 32px));
   padding: 3px;
-  border-radius: 22px;
+  border-radius: 10px;
   overflow: hidden;
   isolation: isolate;
 }
@@ -17,7 +17,7 @@
   position: absolute;
   inset: -60%;
   z-index: -1;
-  background: conic-gradient(from 0deg, #ff2bd6, #00e5ff, #a6ff00, #ffcc00, #ff2bd6);
+  background: conic-gradient(from 0deg, #fc4509, #fae7b8, #0eca98, #7b1fa2, #fc4509);
   animation: spam-spin 2.4s linear infinite;
 }
 
@@ -32,14 +32,15 @@
   display: grid;
   justify-items: center;
   gap: 12px;
-  padding: 30px 24px 24px;
-  border-radius: 19px;
+  /* room for the close button and the joke next to it */
+  padding: 52px 24px 24px;
+  border-radius: 8px;
   background:
-    radial-gradient(120% 70% at 50% 0%, rgba(255, 43, 214, 0.25), transparent 60%),
-    #120a22;
-  color: #fff;
+    radial-gradient(120% 80% at 50% 0%, #5a1787, transparent 70%),
+    #1e2225;
+  color: #fbfbfb;
   text-align: center;
-  font-family: var(--font-body);
+  font-family: var(--font-casino);
 }
 
 .spam__close {
@@ -59,25 +60,23 @@
   top: 14px;
   right: 50px;
   padding: 4px 10px;
-  border-radius: 8px;
-  background: #ffcc00;
-  color: #1a0f00;
+  border-radius: 4px;
+  background: #fae7b8;
+  color: #1a1a1a;
   font-size: 13px;
   font-weight: 700;
 }
 
 .spam__brand {
-  font-family: var(--font-casino);
   font-weight: 800;
   font-size: 15px;
   letter-spacing: 0.08em;
-  color: #a6ff00;
-  text-shadow: 0 0 12px rgba(166, 255, 0, 0.6);
+  text-transform: uppercase;
+  color: #fc4509;
 }
 
 .spam__title {
-  font-family: var(--font-casino);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 22px;
   line-height: 1.25;
 }
@@ -93,7 +92,7 @@
 }
 
 .spam__timer b {
-  color: #ff5c8a;
+  color: #fae7b8;
   font-variant-numeric: tabular-nums;
 }
 
@@ -101,19 +100,17 @@
   width: 100%;
   min-height: 52px;
   margin-top: 6px;
-  border-radius: 14px;
-  background: linear-gradient(90deg, #ff2bd6, #ff7a00);
+  border-radius: 4px;
+  background: #fc4509;
   color: #fff;
-  font-family: var(--font-casino);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 17px;
-  box-shadow: 0 10px 30px -8px rgba(255, 43, 214, 0.8);
   animation: cta-pulse 1.4s ease-in-out infinite;
 }
 
 @keyframes cta-pulse {
   50% {
     transform: scale(1.04);
-    box-shadow: 0 14px 40px -6px rgba(255, 43, 214, 0.95);
+    background: #ff7043;
   }
 }
