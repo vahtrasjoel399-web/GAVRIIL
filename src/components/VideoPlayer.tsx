@@ -163,7 +163,7 @@ export function VideoPlayer({ video, onChapterChange, ref }: VideoPlayerProps) {
       data-own-keys
       tabIndex={0}
       role="region"
-      aria-label={`Видеоплеер: ${video.title}`}
+      aria-label={video.title ? `Видеоплеер: ${video.title}` : 'Видеоплеер'}
     >
       <video
         ref={videoRef}
@@ -208,7 +208,7 @@ export function VideoPlayer({ video, onChapterChange, ref }: VideoPlayerProps) {
           <motion.button
             className="player__poster"
             onClick={togglePlay}
-            aria-label={`Смотреть: ${video.title}`}
+            aria-label={video.title ? `Смотреть: ${video.title}` : 'Смотреть видео'}
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 1.04 }}
             transition={{ duration: 0.6 }}
@@ -217,7 +217,7 @@ export function VideoPlayer({ video, onChapterChange, ref }: VideoPlayerProps) {
               <IconPlay />
             </span>
             <span className="player__poster-text">
-              <span className="player__poster-title">{video.title}</span>
+              {video.title && <span className="player__poster-title">{video.title}</span>}
               {duration > 0 && <span className="player__poster-time">{formatTime(duration)}</span>}
             </span>
           </motion.button>

@@ -116,7 +116,7 @@ export function Lightbox({ items, index, open, onIndexChange, onClose }: Lightbo
           </div>
 
           <div className="lightbox__footer">
-            <p className="lightbox__caption">{photo.caption ?? photo.alt}</p>
+            {photo.caption && <p className="lightbox__caption">{photo.caption}</p>}
             {count > 1 && (
               <div className="lightbox__strip" ref={stripRef}>
                 {items.map((item, i) => (

@@ -19,7 +19,7 @@ export function Polaroid({
   return (
     <button
       type="button"
-      className={`polaroid ${className}`}
+      className={`polaroid ${photo.caption ? '' : 'polaroid--plain'} ${className}`}
       style={{ '--r': `${rotate}deg`, ...style } as CSSProperties}
       onClick={onOpen}
       aria-label={`Открыть фото: ${photo.caption ?? photo.alt}`}
@@ -28,7 +28,7 @@ export function Polaroid({
       <span className="polaroid__photo" style={{ aspectRatio: photo.ratio ?? 1 }}>
         <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" draggable={false} />
       </span>
-      <span className="polaroid__caption">{photo.caption ?? ' '}</span>
+      {photo.caption && <span className="polaroid__caption">{photo.caption}</span>}
     </button>
   )
 }

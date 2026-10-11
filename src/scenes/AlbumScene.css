@@ -54,47 +54,28 @@
   gap: 3cqw;
 }
 
-/* Photos are sized against this box, so tall and wide shots both fit the page. */
+/* Photos are sized against this box (src/lib/albumLayout.ts), so any mix of shots fits the page. */
 .album-photos {
   flex: 1;
   min-height: 0;
-  position: relative;
   container-type: size;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3cqw;
 }
 
-.album-photos--1 {
-  display: grid;
-  place-items: center;
+.album-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4cqw;
 }
 
-.album-photos--1 .album-photos__item {
-  width: min(88cqw, calc(78cqh * var(--ratio)));
-}
-
-.album-photos--2 .album-photos__item {
-  position: absolute;
-  width: min(74cqw, calc(40cqh * var(--ratio)));
-}
-
-/* Upright shots stand side by side, so they can be taller. */
-.album-photos--2 .album-photos__item.is-tall {
-  width: min(48cqw, calc(60cqh * var(--ratio)));
-}
-
-.album-photos__item--0 {
-  top: 4%;
-  left: 1%;
-}
-
-.album-photos__item--1 {
-  bottom: 1%;
-  right: 1%;
-}
-
-.album-page__note {
-  align-self: flex-end;
-  max-width: 80%;
-  text-align: right;
+.album-photos__item {
+  flex: none;
+  /* --w and --h bound the photo; the polaroid adds its side borders (4% each, parts.css) */
+  width: calc(min(calc(var(--w) * 1cqw), calc(var(--h) * 1cqh * var(--ratio))) + 8cqw);
 }
 
 .album-video {

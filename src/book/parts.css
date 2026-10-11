@@ -27,6 +27,11 @@
   }
 }
 
+/* no caption: just the wider white edge under the photo */
+.polaroid--plain {
+  padding-bottom: 6%;
+}
+
 .polaroid__tape {
   position: absolute;
   top: -5%;

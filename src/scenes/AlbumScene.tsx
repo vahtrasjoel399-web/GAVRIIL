@@ -2,13 +2,16 @@ import type { CSSProperties, ReactNode } from 'react'
 import { Book, type BookSpread } from '../book/Book'
 import { Flourish, MarginNote, Polaroid } from '../book/parts'
 import { VideoPlayer } from '../components/VideoPlayer'
-import { album, lock, type AlbumPage } from '../content'
+import { album, lock, type VideoContent } from '../content'
 import { useLightbox } from '../context/LightboxContext'
+import { albumPages, type AlbumRow } from '../lib/albumLayout'
 import './AlbumScene.css'
 
-const ROTATIONS = [-3, 2.5]
+/** Photos lie a little askew, as if glued in by hand. */
+const ROTATIONS = [-2.5, 2, 1.5, -2, 2.5, -1.5]
+const PHOTO_PAGES = albumPages(album.photos)
 
-/** Part 5, the finale: the album of cute photos and videos. Next visits open it right away. */
+/** Part 5, the finale: the album of photos and videos. Next visits open it right away. */
 export function AlbumScene({ gaveUp, onRestart }: { gaveUp: boolean; onRestart: () => void }) {
   return (
     <div className="scene scene--album">
@@ -19,11 +22,12 @@ export function AlbumScene({ gaveUp, onRestart }: { gaveUp: boolean; onRestart: 
   )
 }
 
-/** Title, then the album pages two by two, then the birthday wish. */
+/** Title, then the photo pages and the videos two by two, then the birthday wish. */
 function albumSpreads(gaveUp: boolean, onRestart: () => void): BookSpread[] {
   const pages: ReactNode[] = [
     <TitlePage key="title" gaveUp={gaveUp} />,
-    ...album.pages.map((page, i) => <AlbumPageView key={i} page={page} />),
+    ...PHOTO_PAGES.map((rows, i) => <PhotoPage key={`photos-${i}`} rows={rows} />),
+    ...album.videos.map((video) => <VideoPage key={video.src} video={video} />),
     <EndingPage key="ending" onRestart={onRestart} />,
   ]
   const endsLeft = pages.length % 2 === 1
@@ -52,39 +56,37 @@ function TitlePage({ gaveUp }: { gaveUp: boolean }) {
   )
 }
 
-function AlbumPageView({ page }: { page: AlbumPage }) {
+/** A page of photos; a click opens the photo full screen, with the whole album to leaf through. */
+function PhotoPage({ rows }: { rows: AlbumRow[] }) {
   const { open } = useLightbox()
   return (
     <div className="album-page">
-      {page.kind === 'photos' && (
-        <div className={`album-photos album-photos--${Math.min(page.photos.length, 2)}`}>
-          {page.photos.slice(0, 2).map((photo, i) => (
-            <Polaroid
-              key={photo.src}
-              photo={photo}
-              rotate={ROTATIONS[i]}
-              className={`album-photos__item album-photos__item--${i} ${(photo.ratio ?? 1) < 1 ? 'is-tall' : ''}`}
-              style={{ '--ratio': photo.ratio ?? 1 } as CSSProperties}
-              onOpen={() => open(page.photos, i)}
-            />
-          ))}
-        </div>
-      )}
-      {page.kind === 'video' && (
-        <div className="album-video">
-          <VideoPlayer video={page.video} />
-          {page.caption && (
-            <MarginNote color="blue" rotate={-2}>
-              {page.caption}
-            </MarginNote>
-          )}
-        </div>
-      )}
-      {page.note && (
-        <MarginNote color="red" rotate={-4} className="album-page__note">
-          {page.note}
-        </MarginNote>
-      )}
+      <div className="album-photos">
+        {rows.map((row, r) => (
+          <div key={r} className="album-row">
+            {row.items.map(({ photo, index, width, height }) => (
+              <Polaroid
+                key={photo.src}
+                photo={photo}
+                rotate={ROTATIONS[index % ROTATIONS.length]}
+                className="album-photos__item"
+                style={{ '--ratio': photo.ratio ?? 1, '--w': width, '--h': height } as CSSProperties}
+                onOpen={() => open(album.photos, index)}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function VideoPage({ video }: { video: VideoContent }) {
+  return (
+    <div className="album-page">
+      <div className="album-video">
+        <VideoPlayer video={video} />
+      </div>
     </div>
   )
 }

@@ -23,13 +23,6 @@ export interface GiftBox {
   ribbon: string
 }
 
-// ---------- 5. Album ----------
-
-/** One page of the album: one or two photos, or a video. */
-export type AlbumPage =
-  | { kind: 'photos'; photos: Photo[]; note?: string }
-  | { kind: 'video'; video: VideoContent; caption?: string; note?: string }
-
 // ---------- 3–4. Tournament ----------
 
 export interface Contender {
@@ -48,7 +41,8 @@ export interface VideoContent {
   /** Optional extra sources (e.g. webm) for wider browser support. */
   sources?: { src: string; type: string }[]
   poster?: string
-  title: string
+  /** Written over the poster; leave out for a bare play button. */
+  title?: string
   /** Width / height of the video. Default 16 / 9; vertical phone clips are 9 / 16. */
   ratio?: number
   chapters?: { time: number; label: string }[]
