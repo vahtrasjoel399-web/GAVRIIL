@@ -50,6 +50,8 @@
   position: absolute;
   inset: 0;
   display: grid;
+  /* one column as wide as the stage: the box picture is wider than it and has to overflow evenly on both sides */
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   container-type: size;
 }

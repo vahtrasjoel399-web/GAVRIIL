@@ -104,7 +104,7 @@ export function BoxesScene({ onBook }: { onBook: () => void }) {
                   <motion.div
                     className={`nest__inner ${isLast ? 'nest__inner--book' : ''}`}
                     // the opening of the rendered box sits a little right of the picture centre
-                    style={{ left: `calc(50% + ${(isLast ? 2 : 15) * scaleFor(level)}cqw)` }}
+                    style={{ left: `calc(50% + ${(isLast ? 2 : 5) * scaleFor(level)}cqw)` }}
                     initial={{ y: '70%', opacity: 0 }}
                     animate={
                       leaving
