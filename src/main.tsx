@@ -4,7 +4,6 @@ import '@fontsource/cormorant-garamond/600.css'
 import '@fontsource/cormorant-garamond/400-italic.css'
 import '@fontsource/caveat/500.css'
 import '@fontsource-variable/manrope'
-import '@fontsource-variable/montserrat'
 import './styles/global.css'
 
 import { StrictMode } from 'react'

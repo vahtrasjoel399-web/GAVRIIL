@@ -1,7 +1,7 @@
 import type { Photo, VideoContent } from './types'
 
-// Part 5, the finale: the album — photos and videos, no captions and no stories. It opens after
-// the casino, and later visits open it right away. The photos are laid out by themselves, three
+// Part 3, the finale: the album — photos and videos, no captions and no stories. It opens when
+// the lock does, and later visits open it right away. The photos are laid out by themselves, three
 // or four to a page (src/lib/albumLayout.ts); a click opens one full screen. Every video gets its
 // own page. The last page is the birthday wish.
 // Photos live in /public/media/photos/gavriil, videos (with poster frames) in

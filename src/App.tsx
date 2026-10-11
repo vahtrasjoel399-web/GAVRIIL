@@ -1,7 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
-import { CasinoApp } from './casino/CasinoApp'
-import { SpamBanner } from './casino/SpamBanner'
 import { SoundToggles } from './components/SoundToggles'
 import { SpotifyDock } from './components/SpotifyDock'
 import { LightboxProvider } from './context/LightboxContext'
@@ -13,9 +11,9 @@ import { AlbumScene } from './scenes/AlbumScene'
 import { BoxesScene } from './scenes/BoxesScene'
 import { LockScene } from './scenes/LockScene'
 
-type Scene = 'boxes' | 'lock' | 'casino' | 'album'
+type Scene = 'boxes' | 'lock' | 'album'
 
-/** Set once the casino is done: next visits open the album right away. */
+/** Set once the book is open: next visits open the album right away. */
 const COMPLETED = 'progress:completed'
 
 function initialScene(): Scene {
@@ -47,7 +45,6 @@ function Experience() {
   const music = useMusic()
   const [scene, setScene] = useState<Scene>(initialScene)
   const [gaveUp, setGaveUp] = useState(false)
-  const [banner, setBanner] = useState(false)
 
   // Music can only start after a gesture; the first tap anywhere is enough.
   useEffect(() => {
@@ -63,29 +60,20 @@ function Experience() {
   const restart = () => {
     writeStorage(COMPLETED, false)
     setGaveUp(false)
-    setBanner(false)
     setScene('boxes')
   }
 
   return (
     <div className={`app app--${scene}`}>
-      {scene !== 'casino' && <SoundToggles />}
-      {scene !== 'casino' && <SpotifyDock />}
+      <SoundToggles />
+      <SpotifyDock />
       <AnimatePresence mode="wait">
         <motion.main key={scene} className="app__scene" {...sceneMotion}>
           {scene === 'boxes' && <BoxesScene onBook={() => setScene('lock')} />}
           {scene === 'lock' && (
             <LockScene
               onOpened={(g) => {
-                // The book is open — and a betting spam banner jumps over it.
                 setGaveUp(g)
-                setBanner(true)
-              }}
-            />
-          )}
-          {scene === 'casino' && (
-            <CasinoApp
-              onDone={() => {
                 writeStorage(COMPLETED, true)
                 setScene('album')
               }}
@@ -94,13 +82,6 @@ function Experience() {
           {scene === 'album' && <AlbumScene gaveUp={gaveUp} onRestart={restart} />}
         </motion.main>
       </AnimatePresence>
-      <SpamBanner
-        open={banner}
-        onAccept={() => {
-          setBanner(false)
-          setScene('casino')
-        }}
-      />
     </div>
   )
 }

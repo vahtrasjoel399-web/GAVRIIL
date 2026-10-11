@@ -23,17 +23,6 @@ export interface GiftBox {
   ribbon: string
 }
 
-// ---------- 3–4. Tournament ----------
-
-export interface Contender {
-  id: string
-  name: string
-  /** Second line under the name. */
-  nickname?: string
-  /** Optional photo; without it the initial is shown in a coloured circle. */
-  photo?: string
-}
-
 // ---------- media ----------
 
 export interface VideoContent {
