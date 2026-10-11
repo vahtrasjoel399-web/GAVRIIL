@@ -30,8 +30,8 @@ export const tournament = {
 
   /**
    * Everyone plays from the first round. The list is cut in order into first-round matches;
-   * with 21 girls that is 8 matches of 1/8 — five of three, three of two (11 girls on the left
-   * half of the bracket, 10 on the right). Then pairs up to the final in the middle.
+   * with 22 girls that is 8 matches of 1/8 — six of three, two of two (11 girls on each half
+   * of the bracket). Then pairs up to the final in the middle.
    * `photo` is optional — without it a coloured circle with her initial is shown.
    */
   contenders: [
@@ -56,6 +56,7 @@ export const tournament = {
     { id: 'g19', name: 'Соня', nickname: 'нарвская (или как там её)' },
     { id: 'g20', name: 'Кармен', nickname: 'тоже какая-то эстонка' },
     { id: 'g21', name: 'Катя', nickname: 'из хора' },
+    { id: 'g22', name: 'Ирландка' },
   ] satisfies Contender[],
 
   /** Live commentary for every match. {players} — everyone in it, {winner} — who goes through, {loser} — who drops out. */
